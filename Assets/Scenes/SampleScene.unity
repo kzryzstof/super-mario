@@ -926,8 +926,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699c81218ea024eb9aba2cc149f5ed5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 400
-  moveSpeed: 150
+  jumpForce: 800
+  moveSpeed: 225
   playerRigidbody: {fileID: 1212587522}
   isJumping: 0
   isGrounded: 0
