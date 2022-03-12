@@ -1,37 +1,31 @@
 using System;
+using NoSuchCompany.Games.SuperMario.Entities;
 using UnityEngine;
 
 namespace NoSuchCompany.Games.SuperMario
 {
     public class GoombasBehavior : MonoBehaviour
     {
+        private const float NoMovement = 0f;
+        private EnemySurroundings _enemySurroundings;
+        
         private Vector3 _velocity = Vector3.zero;
         private float _horizontalMovement;
-        private PlayerBehavior _playerBehavior;
         
+        //  Defines field (public for debuggability in the editor)
         public bool _jumpTriggered;
         public bool _isGrounded;
-        public bool _mustAttack;
-        public bool _mustJump;
-        public Vector2 _distanceFromPlayer;
         public bool _isWinner;
 
+        //  Defines configurable properties.
         public float jumpForce;
-
         public float moveSpeed;
-
         public Rigidbody2D characterRigidbody;
-
         public Transform groundCheck;
-
         public float groundCheckRadius;
-
         public LayerMask collisionLayers;
-
         public Animator goombasAnimator;
-
         public SpriteRenderer spriteRenderer;
-
         public float minDistanceToAttack;
         
         public GoombasBehavior()
@@ -47,30 +41,13 @@ namespace NoSuchCompany.Games.SuperMario
                 return;
             }
 
-            _playerBehavior ??= FindObjectOfType<PlayerBehavior>();
+            _enemySurroundings ??= EnemySurroundings.Get(this);
             
             _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
-            Vector2 playerPosition = _playerBehavior.transform.position;
-            Vector2 goombasPosition = characterRigidbody.position;
-            
-            _distanceFromPlayer = playerPosition - goombasPosition;
-            _mustAttack = _distanceFromPlayer.magnitude < minDistanceToAttack;
+            _horizontalMovement = _enemySurroundings.MustAttack(minDistanceToAttack) ? _enemySurroundings.MoveTowardPlayer(moveSpeed) : NoMovement;
 
-            if (_mustAttack)
-            {
-                float horizontalAxis = _distanceFromPlayer.normalized.x > 0f ? 1f : -1f;
-                float deltaTime = Time.fixedDeltaTime;
-                _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
-            }
-            else
-            {
-                _horizontalMovement = 0f;
-            }
-
-            _mustJump = playerPosition.y > (goombasPosition.y + 1f);
-            
-            if (_mustJump && _isGrounded)
+            if (_enemySurroundings.MustJump() && _isGrounded)
                 _jumpTriggered = true;
         }
 
@@ -114,7 +91,7 @@ namespace NoSuchCompany.Games.SuperMario
         
         private void OnCollisionEnter2D(Collision2D otherCollision2D)
         {
-            if (otherCollision2D.gameObject.CompareTag("Player"))
+            if (otherCollision2D.gameObject.CompareTag(Constants.Tags.Player))
             {
                 _isWinner = true;
                 var playerBehavior = otherCollision2D.transform.GetComponent<PlayerBehavior>();
