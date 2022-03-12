@@ -33,9 +33,12 @@ namespace NoSuchCompany.Games.SuperMario
         [FormerlySerializedAs("CollisionLayers")]
         public LayerMask collisionLayers;
 
-        [FormerlySerializedAs("TestOutput")]
-        public float testOutput;
+        [FormerlySerializedAs("PlayerAnimator")]
+        public Animator playerAnimator;
 
+        [FormerlySerializedAs("SpriteRenderer")]
+        public SpriteRenderer spriteRenderer;
+        
         public MovePlayerBehavior()
         {
             isJumping = false;
@@ -49,8 +52,6 @@ namespace NoSuchCompany.Games.SuperMario
             float deltaTime = Time.fixedDeltaTime;
             
             _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
-
-            testOutput = deltaTime;
             
             if (Input.GetButtonDown("Jump") && isGrounded)
                 isJumping = true;
@@ -76,8 +77,18 @@ namespace NoSuchCompany.Games.SuperMario
                 playerRigidbody.AddForce(new Vector2(0f, jumpForce));
                 isJumping = false;
             }
+            
+            Flip(playerRigidbody.velocity.x);
+            
+            playerAnimator.SetFloat("Speed", Math.Abs(playerRigidbody.velocity.x));
+            playerAnimator.SetBool("IsJumping", !isGrounded);
         }
 
+        private void Flip(float characterVelocity)
+        {
+            spriteRenderer.flipX = characterVelocity < -0.1f;
+        }
+        
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
