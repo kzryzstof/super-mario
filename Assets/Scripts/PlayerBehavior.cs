@@ -1,73 +1,54 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NoSuchCompany.Games.SuperMario
 {
-    public class MovePlayerBehavior : MonoBehaviour
+    public class PlayerBehavior : MonoBehaviour
     {
         private Vector3 _velocity = Vector3.zero;
         private float _horizontalMovement;
+        public bool _jumpTriggered;
+        public bool _isGrounded;
+        public bool _isDead;
         
-        [FormerlySerializedAs("JumpForce")]
         public float jumpForce;
 
-        [FormerlySerializedAs("MoveSpeed")]
         public float moveSpeed;
 
-        [FormerlySerializedAs("PlayerRigidbody")]
         public Rigidbody2D playerRigidbody;
 
-        [FormerlySerializedAs("IsJumping")]
-        public bool isJumping;
-
-        [FormerlySerializedAs("IsGrounded")]
-        public bool isGrounded;
-
-        [FormerlySerializedAs("GroundCheck")]
         public Transform groundCheck;
 
-        [FormerlySerializedAs("GroundCheckRadius")]
         public float groundCheckRadius;
 
-        [FormerlySerializedAs("CollisionLayers")]
         public LayerMask collisionLayers;
 
-        [FormerlySerializedAs("PlayerAnimator")]
         public Animator playerAnimator;
 
-        [FormerlySerializedAs("SpriteRenderer")]
         public SpriteRenderer spriteRenderer;
-        
-        [FormerlySerializedAs("IsDead")]
-        public bool isDead;
 
-        [FormerlySerializedAs("ContactWith")]
-        public string contactWith;
-        
-        public MovePlayerBehavior()
+        public PlayerBehavior()
         {
-            isJumping = false;
+            _jumpTriggered = false;
         }
 
         public void Update()
         {
-            if (isDead)
+            if (_isDead)
             {
                 _horizontalMovement = 0f;
                 return;
             }
             
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
+            _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
             float horizontalAxis = Input.GetAxis("Horizontal");
             float deltaTime = Time.fixedDeltaTime;
             
             _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
             
-            if (Input.GetButtonDown("Jump") && isGrounded)
-                isJumping = true;
+            if (Input.GetButtonDown("Jump") && _isGrounded)
+                _jumpTriggered = true;
         }
         
         public void FixedUpdate()
@@ -85,16 +66,16 @@ namespace NoSuchCompany.Games.SuperMario
 
             playerRigidbody.velocity = Vector3.SmoothDamp(playerRigidbody.velocity, targetVelocity, ref _velocity, SmoothTime);
 
-            if (isJumping)
+            if (_jumpTriggered)
             {
                 playerRigidbody.AddForce(new Vector2(0f, jumpForce));
-                isJumping = false;
+                _jumpTriggered = false;
             }
             
             Flip(playerRigidbody.velocity.x);
             
             playerAnimator.SetFloat("Speed", Math.Abs(playerRigidbody.velocity.x));
-            playerAnimator.SetBool("IsJumping", !isGrounded);
+            playerAnimator.SetBool("IsJumping", !_isGrounded);
         }
 
         private void Flip(float characterVelocity)
@@ -110,7 +91,7 @@ namespace NoSuchCompany.Games.SuperMario
 
         public void Kill()
         {
-            isDead = true;
+            _isDead = true;
             playerAnimator.SetBool("IsDead", true);
         }
 

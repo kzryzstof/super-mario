@@ -1,90 +1,65 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NoSuchCompany.Games.SuperMario
 {
     public class GoombasBehavior : MonoBehaviour
     {
         private Vector3 _velocity = Vector3.zero;
-
         private float _horizontalMovement;
+        private PlayerBehavior _playerBehavior;
+        
+        public bool _jumpTriggered;
+        public bool _isGrounded;
+        public bool _mustAttack;
+        public bool _mustJump;
+        public Vector2 _distanceFromPlayer;
+        public bool _isWinner;
 
-        [FormerlySerializedAs("JumpForce")]
         public float jumpForce;
 
-        [FormerlySerializedAs("MoveSpeed")]
         public float moveSpeed;
 
-        [FormerlySerializedAs("PlayerGameObject")]
-        public GameObject playerGameObject;
-
-        [FormerlySerializedAs("CharacterRigidbody")]
         public Rigidbody2D characterRigidbody;
 
-        [FormerlySerializedAs("IsJumping")]
-        public bool isJumping;
-
-        [FormerlySerializedAs("IsGrounded")]
-        public bool isGrounded;
-
-        [FormerlySerializedAs("GroundCheck")]
         public Transform groundCheck;
 
-        [FormerlySerializedAs("GroundCheckRadius")]
         public float groundCheckRadius;
 
-        [FormerlySerializedAs("CollisionLayers")]
         public LayerMask collisionLayers;
 
-        [FormerlySerializedAs("GoombasAnimator")]
         public Animator goombasAnimator;
 
-        [FormerlySerializedAs("SpriteRenderer")]
         public SpriteRenderer spriteRenderer;
 
-        [FormerlySerializedAs("MustAttack")]
-        public bool mustAttack;
-
-        [FormerlySerializedAs("MustJump")]
-        public bool mustJump;
-
-        [FormerlySerializedAs("Distance")]
-        public Vector2 distance;
-
-        [FormerlySerializedAs("MinimumDistanceToAttack")]
         public float minDistanceToAttack;
         
-        [FormerlySerializedAs("ContactWith")]
-        public string contactWith;
-
-        [FormerlySerializedAs("IsWinner")]
-        public bool isWinner;
-
         public GoombasBehavior()
         {
-            isJumping = false;
+            _jumpTriggered = false;
         }
 
         public void Update()
         {
-            if (isWinner)
+            if (_isWinner)
             {
                 _horizontalMovement = 0f;
                 return;
             }
-            
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
-            Vector2 playerPosition = playerGameObject.transform.position;
+            _playerBehavior ??= FindObjectOfType<PlayerBehavior>();
+            
+            _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
+
+            Vector2 playerPosition = _playerBehavior.transform.position;
             Vector2 goombasPosition = characterRigidbody.position;
             
-            distance = playerPosition - goombasPosition;
-            mustAttack = distance.magnitude < minDistanceToAttack;
+            _distanceFromPlayer = playerPosition - goombasPosition;
+            _mustAttack = _distanceFromPlayer.magnitude < minDistanceToAttack;
 
-            if (mustAttack)
+            if (_mustAttack)
             {
-                float horizontalAxis = distance.normalized.x > 0f ? 1f : -1f;
+                float horizontalAxis = _distanceFromPlayer.normalized.x > 0f ? 1f : -1f;
                 float deltaTime = Time.fixedDeltaTime;
                 _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
             }
@@ -93,10 +68,10 @@ namespace NoSuchCompany.Games.SuperMario
                 _horizontalMovement = 0f;
             }
 
-            mustJump = playerPosition.y > (goombasPosition.y + 1f);
+            _mustJump = playerPosition.y > (goombasPosition.y + 1f);
             
-            if (mustJump && isGrounded)
-                isJumping = true;
+            if (_mustJump && _isGrounded)
+                _jumpTriggered = true;
         }
 
         public void FixedUpdate()
@@ -114,16 +89,16 @@ namespace NoSuchCompany.Games.SuperMario
 
             characterRigidbody.velocity = Vector3.SmoothDamp(characterRigidbody.velocity, targetVelocity, ref _velocity, SmoothTime);
 
-            if (isJumping)
+            if (_jumpTriggered)
             {
                 characterRigidbody.AddForce(new Vector2(0f, jumpForce));
-                isJumping = false;
+                _jumpTriggered = false;
             }
 
             Flip(characterRigidbody.velocity.x);
 
             goombasAnimator.SetFloat("Speed", Math.Abs(characterRigidbody.velocity.x));
-            goombasAnimator.SetBool("IsJumping", !isGrounded);
+            goombasAnimator.SetBool("IsJumping", !_isGrounded);
         }
 
         private void Flip(float characterVelocity)
@@ -141,8 +116,8 @@ namespace NoSuchCompany.Games.SuperMario
         {
             if (otherCollision2D.gameObject.CompareTag("Player"))
             {
-                isWinner = true;
-                var playerBehavior = otherCollision2D.transform.GetComponent<MovePlayerBehavior>();
+                _isWinner = true;
+                var playerBehavior = otherCollision2D.transform.GetComponent<PlayerBehavior>();
                 playerBehavior.Kill();
             }
         }
