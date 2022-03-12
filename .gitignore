@@ -7,6 +7,9 @@
 /[Ll]ogs/
 /Assets/AssetStoreTools*
 /Assets/Plugins/
+/Assets/Scripts/bin/
+/Assets/Scripts/obj/
+/Assets/Scripts/.idea/
 
 # Visual Studio 2015 cache directory
 /.vs/
