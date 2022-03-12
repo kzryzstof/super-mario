@@ -16,8 +16,8 @@ namespace NoSuchCompany.Games.SuperMario
         [FormerlySerializedAs("MoveSpeed")]
         public float moveSpeed;
 
-        [FormerlySerializedAs("PlayerRigidbody")]
-        public Rigidbody2D playerRigidbody;
+        [FormerlySerializedAs("PlayerGameObject")]
+        public GameObject playerGameObject;
 
         [FormerlySerializedAs("CharacterRigidbody")]
         public Rigidbody2D characterRigidbody;
@@ -54,6 +54,12 @@ namespace NoSuchCompany.Games.SuperMario
 
         [FormerlySerializedAs("MinimumDistanceToAttack")]
         public float minDistanceToAttack;
+        
+        [FormerlySerializedAs("ContactWith")]
+        public string contactWith;
+
+        [FormerlySerializedAs("IsWinner")]
+        public bool isWinner;
 
         public GoombasBehavior()
         {
@@ -62,9 +68,15 @@ namespace NoSuchCompany.Games.SuperMario
 
         public void Update()
         {
+            if (isWinner)
+            {
+                _horizontalMovement = 0f;
+                return;
+            }
+            
             isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
-            Vector2 playerPosition = playerRigidbody.position;
+            Vector2 playerPosition = playerGameObject.transform.position;
             Vector2 goombasPosition = characterRigidbody.position;
             
             distance = playerPosition - goombasPosition;
@@ -123,6 +135,16 @@ namespace NoSuchCompany.Games.SuperMario
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+        
+        private void OnCollisionEnter2D(Collision2D otherCollision2D)
+        {
+            if (otherCollision2D.gameObject.CompareTag("Player"))
+            {
+                isWinner = true;
+                var playerBehavior = otherCollision2D.transform.GetComponent<MovePlayerBehavior>();
+                playerBehavior.Kill();
+            }
         }
     }
 }

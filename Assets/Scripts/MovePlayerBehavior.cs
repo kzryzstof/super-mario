@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -39,6 +40,12 @@ namespace NoSuchCompany.Games.SuperMario
         [FormerlySerializedAs("SpriteRenderer")]
         public SpriteRenderer spriteRenderer;
         
+        [FormerlySerializedAs("IsDead")]
+        public bool isDead;
+
+        [FormerlySerializedAs("ContactWith")]
+        public string contactWith;
+        
         public MovePlayerBehavior()
         {
             isJumping = false;
@@ -46,6 +53,12 @@ namespace NoSuchCompany.Games.SuperMario
 
         public void Update()
         {
+            if (isDead)
+            {
+                _horizontalMovement = 0f;
+                return;
+            }
+            
             isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
             float horizontalAxis = Input.GetAxis("Horizontal");
@@ -94,5 +107,12 @@ namespace NoSuchCompany.Games.SuperMario
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+
+        public void Kill()
+        {
+            isDead = true;
+            playerAnimator.SetBool("IsDead", true);
+        }
+
     }
 }
