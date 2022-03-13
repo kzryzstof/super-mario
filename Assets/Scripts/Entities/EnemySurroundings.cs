@@ -7,6 +7,7 @@
 // Last author: Christophe Commeyne
 // ==========================================================================
 
+using System;
 using UnityEngine;
 
 namespace NoSuchCompany.Games.SuperMario.Entities
@@ -37,6 +38,11 @@ namespace NoSuchCompany.Games.SuperMario.Entities
             Vector2 distanceFromPlayer = GetDistanceFromPlayer();
             
             return distanceFromPlayer.magnitude < minDistanceToAttack;
+        }
+
+        public bool IsAtSameLevel()
+        {
+            return Math.Abs(_goombasBehavior.transform.position.y - _playerBehavior.transform.position.y) < 1f;
         }
 
         public float MoveTowardPlayer(float moveSpeed)
