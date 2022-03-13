@@ -68,7 +68,7 @@ namespace NoSuchCompany.Games.SuperMario
             
             _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
 
-            if (isJumpPressed && _isGrounded)
+            if (isJumpPressed && _isGrounded && !_jumpTriggered) 
             {
                 Debug.Log($"Player pressed the '{Gamepad.current.buttonSouth.name}' button? '{isJumpPressed}'");
                 _jumpTriggered = true;
@@ -92,6 +92,7 @@ namespace NoSuchCompany.Games.SuperMario
 
             if (_jumpTriggered)
             {
+                Debug.Log($">> Add force!!");
                 playerRigidbody.AddForce(new Vector2(0f, jumpForce));
                 _jumpTriggered = false;
             }
