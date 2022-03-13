@@ -46,8 +46,6 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
 
         public IEnemyStrategy Apply()
         {
-            Debug.Log(_horizontalMovement);
-
             if (_isBlocked)
             {
                 Debug.Log($"{_goombasBehavior.transform.position.y} {_playerBehavior.transform.position.y} Goomba is blocked: jumping over a potential obstacle.");

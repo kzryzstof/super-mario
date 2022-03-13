@@ -1,10 +1,14 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace NoSuchCompany.Games.SuperMario
 {
     public class PlayerBehavior : MonoBehaviour
     {
+        private bool _initialized;
+        
         private Vector3 _velocity = Vector3.zero;
         private float _horizontalMovement;
         public bool _jumpTriggered;
@@ -31,7 +35,13 @@ namespace NoSuchCompany.Games.SuperMario
         {
             _jumpTriggered = false;
         }
-
+        
+        public void Move(InputAction.CallbackContext value)
+        {
+            var moveVal = value.ReadValue<Vector2>();
+            transform.Translate(new Vector3(moveVal.x, moveVal.y, 0));
+        }
+        
         public void Update()
         {
             if (_isDead)
@@ -42,13 +52,27 @@ namespace NoSuchCompany.Games.SuperMario
             
             _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
-            float horizontalAxis = Input.GetAxis("Horizontal");
+            bool isDPadLeftPressed = _initialized && Gamepad.current.dpad.left.isPressed;
+            bool isDPadRightPressed = Gamepad.current.dpad.right.isPressed;
+            bool isJumpPressed = Gamepad.current.buttonSouth.isPressed;
+
+            if (!_initialized && !Gamepad.current.dpad.left.isPressed)
+                _initialized = true;
+            
+            //Debug.Log($"Player pressed the '{Gamepad.current.dpad.left.name}' button? '{isDPadLeftPressed}'");
+            //Debug.Log($"Player pressed the '{Gamepad.current.dpad.right.name}' button? '{isDPadRightPressed}'");
+            //Debug.Log($"Player pressed the '{Gamepad.current.buttonSouth.name}' button? '{isJumpPressed}'");
+
+            float horizontalAxis = isDPadLeftPressed ? -1f : isDPadRightPressed ? 1f: 0f;
             float deltaTime = Time.fixedDeltaTime;
             
             _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
-            
-            if ((Input.GetButtonDown("Jump") || Input.GetKeyDown("joystick button 0")) && _isGrounded)
+
+            if (isJumpPressed && _isGrounded)
+            {
+                Debug.Log($"Player pressed the '{Gamepad.current.buttonSouth.name}' button? '{isJumpPressed}'");
                 _jumpTriggered = true;
+            }
         }
         
         public void FixedUpdate()
@@ -94,6 +118,5 @@ namespace NoSuchCompany.Games.SuperMario
             _isDead = true;
             playerAnimator.SetBool("IsDead", true);
         }
-
     }
 }
