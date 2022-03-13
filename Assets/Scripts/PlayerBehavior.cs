@@ -47,7 +47,7 @@ namespace NoSuchCompany.Games.SuperMario
             
             _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
             
-            if (Input.GetButtonDown("Jump") && _isGrounded)
+            if ((Input.GetButtonDown("Jump") || Input.GetKeyDown("joystick button 0")) && _isGrounded)
                 _jumpTriggered = true;
         }
         
