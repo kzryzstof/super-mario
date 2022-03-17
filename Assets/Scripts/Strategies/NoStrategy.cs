@@ -11,6 +11,14 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
 {
     internal sealed class NoStrategy : IEnemyStrategy
     {
+        private const float NoMovement = 0f;
+        private readonly GoombasBehavior _goombasBehavior;
+        
+        public NoStrategy(GoombasBehavior goombasBehavior)
+        {
+            _goombasBehavior = goombasBehavior;
+        }
+        
         public void Prepare()
         {
         }
@@ -22,6 +30,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
 
         public IEnemyStrategy Apply()
         {
+            _goombasBehavior.Move(NoMovement);
             return this;
         }
     }

@@ -26,12 +26,14 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
         private IEnemyStrategy _currentStrategy;
         private EnemySurroundings _enemySurroundings;
 
+        public bool MustAttack { get; private set; }
+        
         public AnalyzeSurroundings(GoombasBehavior goombasBehavior)
         {
             _goombasBehavior = goombasBehavior;
             _playerBehavior = MonoBehaviour.FindObjectOfType<PlayerBehavior>();
 
-            _currentStrategy = new NoStrategy();
+            _currentStrategy = new NoStrategy(_goombasBehavior);
         }
 
         public void Process()
@@ -45,25 +47,30 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
             }
 
             _enemySurroundings ??= EnemySurroundings.Get(_goombasBehavior);
-
+            MustAttack = _enemySurroundings.MustAttack();
+            
             //  The method analyzes the current surroundings and decide a strategy.
-
-            if (!_enemySurroundings.IsAtSameLevel())
+            
+            if (!MustAttack)
             {
-                _currentStrategy = new ReachGroundStrategy(_goombasBehavior, _playerBehavior);    
+                Debug.Log($"[{_goombasBehavior._name}] Goomba is staying idle.");
+                _currentStrategy = new NoStrategy(_goombasBehavior);
             }
             else
             {
-                bool mustAttack = _enemySurroundings.MustAttack(_goombasBehavior.minDistanceToAttack);
-
-                if (mustAttack)
-                    _currentStrategy = new PursuePlayerStrategy(_goombasBehavior, _playerBehavior);
+                if (!_enemySurroundings.IsAtSameLevel())
+                {
+                    Debug.Log($"[{_goombasBehavior._name}] Goomba is trying to reach the player's level.");
+                    _currentStrategy = new ReachGroundStrategy(_goombasBehavior, _playerBehavior);
+                }
                 else
-                    _currentStrategy = new NoStrategy();
+                {
+                    Debug.Log($"[{_goombasBehavior._name}] Goomba is pursuing the player!");
+                    _currentStrategy = new PursuePlayerStrategy(_goombasBehavior, _playerBehavior);
+                }
             }
 
             _currentStrategy = _currentStrategy.Apply();
-            
         }
     }
 }

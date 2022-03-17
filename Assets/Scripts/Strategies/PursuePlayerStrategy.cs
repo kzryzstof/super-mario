@@ -48,7 +48,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
         public void Prepare()
         {
             _isAtSameLevel = Math.Abs(_goombasBehavior.transform.position.y - _playerBehavior.transform.position.y) < 1f;
-            _mustAttack = _enemySurroundings.MustAttack(_goombasBehavior.minDistanceToAttack);
+            _mustAttack = _enemySurroundings.MustAttack();
             _horizontalMovement = _mustAttack ? _enemySurroundings.MoveTowardPlayer(_goombasBehavior.moveSpeed) : NoMovement;
             _isBlocked = _goombasBehavior.IsBlocked(_mustAttack, _horizontalMovement);
         }
@@ -73,7 +73,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
                 return this;
             }
 
-            return new NoStrategy();
+            return new NoStrategy(_goombasBehavior);
         }
 
         private void UpdateIsStagnating(float latestPosition, float latestMovement)

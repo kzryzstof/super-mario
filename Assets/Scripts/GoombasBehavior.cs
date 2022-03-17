@@ -11,8 +11,6 @@ namespace NoSuchCompany.Games.SuperMario
     {
         private readonly HorizontalMovementHistory _horizontalMovementHistory;
 
-        private const float NoMovement = 0f;
-        private EnemySurroundings _enemySurroundings;
         private AnalyzeSurroundings _analyzeSurroundings;
         
         private Vector3 _velocity = Vector3.zero;
@@ -25,6 +23,7 @@ namespace NoSuchCompany.Games.SuperMario
         public bool _isLeftSideBlocked;
         public string _collidedWith;
         public float _horizontalMovement;
+        public string _name;
 
         //  Defines configurable properties.
         public float jumpForce;
@@ -55,26 +54,6 @@ namespace NoSuchCompany.Games.SuperMario
 
             _analyzeSurroundings ??= new AnalyzeSurroundings(this);
             _analyzeSurroundings.Process();
-            
-            /*
-            _enemySurroundings ??= EnemySurroundings.Get(this);
-            
-            _isGrounded = IsGrounded();
-            
-            bool mustAttack = _enemySurroundings.MustAttack(minDistanceToAttack);
-            
-            _horizontalMovement = mustAttack ? _enemySurroundings.MoveTowardPlayer(moveSpeed) : NoMovement;
-
-            if (IsBlocked(mustAttack, _horizontalMovement))
-            {
-                //  We are blocked. Let's try and jump.
-                if (_isGrounded)
-                    _jumpTriggered = true;
-            }
-
-            if (_enemySurroundings.MustJump() && _isGrounded)
-                _jumpTriggered = true;
-            */
         }
         
         public void FixedUpdate()
@@ -165,10 +144,12 @@ namespace NoSuchCompany.Games.SuperMario
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = _analyzeSurroundings != null && _analyzeSurroundings.MustAttack ? Color.red : Color.green;
+            
             Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
             Gizmos.DrawWireSphere(leftSideCheck.position, checkRadius);
             Gizmos.DrawWireSphere(rightSideCheck.position, checkRadius);
+            Gizmos.DrawWireSphere(transform.position, minDistanceToAttack);
         }
         
         private void OnCollisionEnter2D(Collision2D otherCollision2D)

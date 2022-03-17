@@ -15,7 +15,6 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
 {
     internal sealed class ReachGroundStrategy : IEnemyStrategy
     {
-        private const float NoMovement = 0f;
         private readonly GoombasBehavior _goombasBehavior;
         private readonly PlayerBehavior _playerBehavior;
         private readonly EnemySurroundings _enemySurroundings;
@@ -23,7 +22,8 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
         private readonly float _horizontalMovement;
         private bool _isBlocked;
         private bool _isAtSameLevel;
-
+        private bool _mustAttack;
+        
         public ReachGroundStrategy(GoombasBehavior goombasBehavior, PlayerBehavior playerBehavior)
         {
             _goombasBehavior = goombasBehavior;
@@ -35,11 +35,12 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
         
         public bool IsDone()
         {
-            return _playerBehavior._isDead  || _isAtSameLevel;
+            return _playerBehavior._isDead  || _isAtSameLevel || !_mustAttack;
         }
 
         public void Prepare()
         {
+            _mustAttack = _enemySurroundings.MustAttack();
             _isAtSameLevel = Math.Abs(_goombasBehavior.transform.position.y - _playerBehavior.transform.position.y) < 1f;
             _isBlocked = _goombasBehavior.IsBlocked(true, _horizontalMovement);
         }

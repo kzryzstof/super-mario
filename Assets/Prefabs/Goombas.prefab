@@ -198,6 +198,7 @@ MonoBehaviour:
   _isLeftSideBlocked: 0
   _collidedWith: 
   _horizontalMovement: 0
+  _name: 
   jumpForce: 600
   moveSpeed: 125
   characterRigidbody: {fileID: 1019328964623908232}
@@ -210,7 +211,7 @@ MonoBehaviour:
     m_Bits: 1
   goombasAnimator: {fileID: 1019328964623908239}
   spriteRenderer: {fileID: 1019328964623908238}
-  minDistanceToAttack: 10
+  minDistanceToAttack: 20
 --- !u!1 &1553099136558513726
 GameObject:
   m_ObjectHideFlags: 0

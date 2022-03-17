@@ -32,7 +32,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
 
         public void Prepare()
         {
-            _mustAttack = _enemySurroundings.MustAttack(_goombasBehavior.minDistanceToAttack);
+            _mustAttack = _enemySurroundings.MustAttack();
             _horizontalMovement = _mustAttack ? _enemySurroundings.MoveTowardPlayer(_goombasBehavior.moveSpeed) : NoMovement;
             _isBlocked = _goombasBehavior.IsBlocked(_mustAttack, _horizontalMovement);
         }

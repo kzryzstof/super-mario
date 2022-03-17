@@ -30,14 +30,14 @@ namespace NoSuchCompany.Games.SuperMario.Entities
             return new EnemySurroundings(goombasBehavior, playerBehavior);
         }
 
-        public bool MustAttack(float minDistanceToAttack)
+        public bool MustAttack()
         {
             if (_playerBehavior._isDead)
                 return false;
-            
+
             Vector2 distanceFromPlayer = GetDistanceFromPlayer();
             
-            return distanceFromPlayer.magnitude < minDistanceToAttack;
+            return distanceFromPlayer.magnitude < _goombasBehavior.minDistanceToAttack;
         }
 
         public bool IsAtSameLevel()
