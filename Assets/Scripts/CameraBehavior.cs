@@ -16,8 +16,6 @@ namespace NoSuchCompany.Games.SuperMario
 
     public class CameraBehavior : MonoBehaviour
     {
-        private const float MinimumLeftPosition = 4.5f;
-
         [FormerlySerializedAs("PlayerGameObject")]
         public GameObject playerGameObject;
 
@@ -39,7 +37,7 @@ namespace NoSuchCompany.Games.SuperMario
                 timeOffset
             );
 
-            transform.position = new Vector3(Math.Max(MinimumLeftPosition, result.x), transform.position.y, transform.position.z);
+            transform.position = new Vector3(Math.Max(Configurations.MinimumLeftPosition, result.x), transform.position.y, transform.position.z);
         }
     }
 
