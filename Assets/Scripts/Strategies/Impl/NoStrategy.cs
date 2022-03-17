@@ -3,24 +3,38 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 12/03/2022 @ 13:48
-// Last author: Christophe Commeyne
+// Last change: 16/03/2022 @ 22:04
 // ==========================================================================
 
-namespace NoSuchCompany.Games.SuperMario.Strategies
+namespace NoSuchCompany.Games.SuperMario.Strategies.Impl
 {
+    #region Class
+
     internal sealed class NoStrategy : IEnemyStrategy
     {
+        #region Constants
+
         private const float NoMovement = 0f;
+
         private readonly GoombasBehavior _goombasBehavior;
-        
+
+        #endregion
+
+        #region Constructors
+
         public NoStrategy(GoombasBehavior goombasBehavior)
         {
             _goombasBehavior = goombasBehavior;
         }
-        
-        public void Prepare()
+
+        #endregion
+
+        #region Public Methods
+
+        public IEnemyStrategy Apply()
         {
+            _goombasBehavior.Move(NoMovement);
+            return this;
         }
 
         public bool IsDone()
@@ -28,10 +42,12 @@ namespace NoSuchCompany.Games.SuperMario.Strategies
             return true;
         }
 
-        public IEnemyStrategy Apply()
+        public void Prepare()
         {
-            _goombasBehavior.Move(NoMovement);
-            return this;
         }
+
+        #endregion
     }
+
+    #endregion
 }

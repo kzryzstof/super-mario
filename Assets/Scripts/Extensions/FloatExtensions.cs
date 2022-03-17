@@ -3,19 +3,30 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 12/03/2022 @ 13:20
-// Last author: Christophe Commeyne
+// Last change: 16/03/2022 @ 22:05
 // ==========================================================================
 
 namespace NoSuchCompany.Games.SuperMario.Extensions
 {
+    #region Class
+
     internal static class FloatExtensions
     {
+        #region Constants
+
         private const float NoMovement = 0f;
+
+        #endregion
+
+        #region Public Methods
 
         public static bool IsMoving(this float value)
         {
             return value > NoMovement;
         }
+
+        #endregion
     }
+
+    #endregion
 }

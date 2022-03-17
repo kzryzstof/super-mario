@@ -6,15 +6,24 @@
 // Last change: 16/03/2022 @ 22:05
 // ==========================================================================
 
-namespace NoSuchCompany.Games.SuperMario.Constants
+using NoSuchCompany.Games.SuperMario.Diagnostics;
+
+namespace NoSuchCompany.Games.SuperMario
 {
     #region Class
 
-    public static class Tags
+    internal static class Configurations
     {
         #region Constants
 
-        public const string Player = nameof(Player);
+        /// <summary>
+        /// Defines the minimum position of both the camera and the player.
+        /// </summary>
+        public const float MinimumLeftPosition = 4.5f;
+
+        public static readonly LogsLevels LogsLevels =
+                LogsLevels.EnemyStrategy
+            ;
 
         #endregion
     }

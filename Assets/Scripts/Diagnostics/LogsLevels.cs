@@ -3,24 +3,21 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 16/03/2022 @ 22:04
+// Last change: 16/03/2022 @ 22:05
 // ==========================================================================
 
-namespace NoSuchCompany.Games.SuperMario.Strategies
+using System;
+
+namespace NoSuchCompany.Games.SuperMario.Diagnostics
 {
-    #region Interface
+    #region Enum
 
-    internal interface IEnemyStrategy
+    [Flags]
+    public enum LogsLevels
     {
-        #region Methods
+        None,
 
-        IEnemyStrategy Apply();
-
-        bool IsDone();
-
-        void Prepare();
-
-        #endregion
+        EnemyStrategy
     }
 
     #endregion

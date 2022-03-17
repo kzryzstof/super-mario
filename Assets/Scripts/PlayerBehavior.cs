@@ -1,20 +1,27 @@
+// ==========================================================================
+// Copyright (C) 2022 by NoSuch Company.
+// All rights reserved.
+// May be used only in accordance with a valid Source Code License Agreement.
+// 
+// Last change: 16/03/2022 @ 22:05
+// ==========================================================================
+
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 namespace NoSuchCompany.Games.SuperMario
 {
+    #region Class
+
     public class PlayerBehavior : MonoBehaviour
     {
-        private bool _initialized;
-        
-        private Vector3 _velocity = Vector3.zero;
-        private float _horizontalMovement;
         public bool _jumpTriggered;
+
         public bool _isGrounded;
+
         public bool _isDead;
-        
+
         public float jumpForce;
 
         public float moveSpeed;
@@ -31,17 +38,17 @@ namespace NoSuchCompany.Games.SuperMario
 
         public SpriteRenderer spriteRenderer;
 
+        private float _horizontalMovement;
+
+        private bool _initialized;
+
+        private Vector3 _velocity = Vector3.zero;
+
         public PlayerBehavior()
         {
             _jumpTriggered = false;
         }
-        
-        public void Move(InputAction.CallbackContext value)
-        {
-            var moveVal = value.ReadValue<Vector2>();
-            transform.Translate(new Vector3(moveVal.x, moveVal.y, 0));
-        }
-        
+
         public void Update()
         {
             if (_isDead)
@@ -49,7 +56,7 @@ namespace NoSuchCompany.Games.SuperMario
                 _horizontalMovement = 0f;
                 return;
             }
-            
+
             _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
             bool isDPadLeftPressed = _initialized && Gamepad.current.dpad.left.isPressed;
@@ -58,28 +65,37 @@ namespace NoSuchCompany.Games.SuperMario
 
             if (!_initialized && !Gamepad.current.dpad.left.isPressed)
                 _initialized = true;
-            
+
             //Debug.Log($"Player pressed the '{Gamepad.current.dpad.left.name}' button? '{isDPadLeftPressed}'");
             //Debug.Log($"Player pressed the '{Gamepad.current.dpad.right.name}' button? '{isDPadRightPressed}'");
             //Debug.Log($"Player pressed the '{Gamepad.current.buttonSouth.name}' button? '{isJumpPressed}'");
 
-            float horizontalAxis = isDPadLeftPressed ? -1f : isDPadRightPressed ? 1f: 0f;
+            float horizontalAxis = isDPadLeftPressed ? -1f : isDPadRightPressed ? 1f : 0f;
             float deltaTime = Time.fixedDeltaTime;
-            
+
             _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
 
-            if (isJumpPressed && _isGrounded && !_jumpTriggered) 
-            {
-                Debug.Log($"Player pressed the '{Gamepad.current.buttonSouth.name}' button? '{isJumpPressed}'");
+            if (isJumpPressed && _isGrounded && !_jumpTriggered)
                 _jumpTriggered = true;
-            }
         }
-        
+
         public void FixedUpdate()
         {
             //  Reserved for physics. No inputs check.
-            
+
             Move(_horizontalMovement);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+
+        public void Move(InputAction.CallbackContext value)
+        {
+            var moveVal = value.ReadValue<Vector2>();
+            transform.Translate(new Vector3(moveVal.x, moveVal.y, 0));
         }
 
         private void Move(float horizontalMovement)
@@ -92,13 +108,12 @@ namespace NoSuchCompany.Games.SuperMario
 
             if (_jumpTriggered)
             {
-                Debug.Log($">> Add force!!");
                 playerRigidbody.AddForce(new Vector2(0f, jumpForce));
                 _jumpTriggered = false;
             }
-            
+
             Flip(playerRigidbody.velocity.x);
-            
+
             playerAnimator.SetFloat("Speed", Math.Abs(playerRigidbody.velocity.x));
             playerAnimator.SetBool("IsJumping", !_isGrounded);
         }
@@ -107,12 +122,6 @@ namespace NoSuchCompany.Games.SuperMario
         {
             spriteRenderer.flipX = characterVelocity < -0.1f;
         }
-        
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
 
         public void Kill()
         {
@@ -120,4 +129,6 @@ namespace NoSuchCompany.Games.SuperMario
             playerAnimator.SetBool("IsDead", true);
         }
     }
+
+    #endregion
 }
