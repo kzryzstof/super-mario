@@ -47,7 +47,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
 
             if (isBlocked)
             {
-                AppLogger.Write(LogsLevels.EnemyStrategy, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");
+                AppLogger.Write(LogsLevels.EnemyState, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");
                 Enemy.Jump();
             }
 

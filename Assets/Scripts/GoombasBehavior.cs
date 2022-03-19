@@ -10,7 +10,6 @@ using System;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Extensions;
-using NoSuchCompany.Games.SuperMario.Helpers;
 using NoSuchCompany.Games.SuperMario.Strategies.Enemy;
 using UnityEngine;
 
@@ -62,8 +61,6 @@ namespace NoSuchCompany.Games.SuperMario
 
         public float minDistanceToAttack;
 
-        private readonly HorizontalMovementHistory _horizontalMovementHistory;
-
         private EnemyContext _enemyContext;
 
         private Vector3 _velocity = Vector3.zero;
@@ -75,7 +72,6 @@ namespace NoSuchCompany.Games.SuperMario
         public GoombasBehavior()
         {
             _jumpTriggered = false;
-            _horizontalMovementHistory = new HorizontalMovementHistory();
         }
 
         public void Update()

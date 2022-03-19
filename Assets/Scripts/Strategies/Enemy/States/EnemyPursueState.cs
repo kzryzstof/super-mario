@@ -64,7 +64,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
         {
             Enemy.Move(horizontalMovement);
 
-            AppLogger.Write(LogsLevels.EnemyStrategy, $"{Player.Position.y} {Player.Position.y} Enemy is heading over to the Player. Movement: {horizontalMovement}. Position ({Enemy.Position.x}, {Enemy.Position.y})");
+            AppLogger.Write(LogsLevels.EnemyState, $"{Player.Position.y} {Player.Position.y} Enemy is heading over to the Player. Movement: {horizontalMovement}. Position ({Enemy.Position.x}, {Enemy.Position.y})");
             TrackNewPosition(Enemy.Position.x, horizontalMovement);
         }
 
@@ -74,7 +74,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
 
             if (isEnemyBlocked)
             {
-                AppLogger.Write(LogsLevels.EnemyStrategy, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");
+                AppLogger.Write(LogsLevels.EnemyState, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");
                 Enemy.Jump();
             }
         }
@@ -85,7 +85,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
 
             if (isPlayerClose && ShouldJump())
             {
-                AppLogger.Write(LogsLevels.EnemyStrategy, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is close to the player: Let's jump to scare");
+                AppLogger.Write(LogsLevels.EnemyState, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is close to the player: Let's jump to scare");
                 Enemy.Jump();
             }
         }
@@ -114,7 +114,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
 
             _isStagnating = maxValue < 0.5f;
 
-            AppLogger.Write(LogsLevels.EnemyStrategy, $"Is stagnating? {_isStagnating} ({maxValue})");
+            AppLogger.Write(LogsLevels.EnemyState, $"Is stagnating? {_isStagnating} ({maxValue})");
         }
 
         private bool ShouldJump()

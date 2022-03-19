@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -50,6 +51,9 @@ namespace NoSuchCompany.Games.SuperMario
             _jumpTriggered = false;
         }
 
+        private bool _countFrames;
+        private int _frameCountAtBeginning;
+        
         public void Update()
         {
             if (_isDead)
@@ -60,6 +64,14 @@ namespace NoSuchCompany.Games.SuperMario
 
             _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
+            if (_isGrounded && _countFrames)
+            {
+                AppLogger.Write(LogsLevels.PlayerControls, $"### Number of frames for a Jump: {Time.frameCount - _frameCountAtBeginning} frames");
+                _countFrames = false;
+            }
+        
+            // --> Stop counting Frames as soon as he is grounded.
+            
             bool isDPadLeftPressed = _initialized && Gamepad.current.dpad.left.isPressed;
             bool isDPadRightPressed = Gamepad.current.dpad.right.isPressed;
             bool isJumpPressed = Gamepad.current.buttonSouth.isPressed;
@@ -77,7 +89,11 @@ namespace NoSuchCompany.Games.SuperMario
             _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
 
             if (isJumpPressed && _isGrounded && !_jumpTriggered)
+            {
+                AppLogger.Write(LogsLevels.PlayerControls, $"Player pressed jump: Is Grounded = {_isGrounded} - Jump Triggered = {_jumpTriggered} -- {Time.frameCount}");
+
                 _jumpTriggered = true;
+            }
         }
 
         public void FixedUpdate()
@@ -109,6 +125,12 @@ namespace NoSuchCompany.Games.SuperMario
 
             if (_jumpTriggered)
             {
+                // --> Start counting Frames as the jump is started.
+                _countFrames = true;
+                _frameCountAtBeginning = Time.frameCount;
+                
+                AppLogger.Write(LogsLevels.PlayerControls, $"--> Adding vertical force to the player as Jump has been triggered {Time.frameCount}");
+                
                 playerRigidbody.AddForce(new Vector2(0f, jumpForce));
                 _jumpTriggered = false;
             }

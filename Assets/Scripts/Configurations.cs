@@ -22,7 +22,8 @@ namespace NoSuchCompany.Games.SuperMario
         public const float MinimumLeftPosition = 4.5f;
 
         public static readonly LogsLevels LogsLevels =
-                LogsLevels.EnemyStrategy
+                //LogsLevels.EnemyState
+                LogsLevels.PlayerControls
             ;
 
         #endregion

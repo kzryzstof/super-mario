@@ -17,7 +17,9 @@ namespace NoSuchCompany.Games.SuperMario.Diagnostics
     {
         None,
 
-        EnemyStrategy
+        EnemyState,
+        
+        PlayerControls
     }
 
     #endregion
