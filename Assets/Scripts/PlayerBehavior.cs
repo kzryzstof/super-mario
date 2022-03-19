@@ -79,6 +79,9 @@ namespace NoSuchCompany.Games.SuperMario
             if (!_initialized && !Gamepad.current.dpad.left.isPressed)
                 _initialized = true;
 
+            bool isRunningPressed = Gamepad.current.buttonWest.isPressed;
+            float runFactor = isRunningPressed ? 1.6f : 1f;
+            
             //Debug.Log($"Player pressed the '{Gamepad.current.dpad.left.name}' button? '{isDPadLeftPressed}'");
             //Debug.Log($"Player pressed the '{Gamepad.current.dpad.right.name}' button? '{isDPadRightPressed}'");
             //Debug.Log($"Player pressed the '{Gamepad.current.buttonSouth.name}' button? '{isJumpPressed}'");
@@ -86,7 +89,7 @@ namespace NoSuchCompany.Games.SuperMario
             float horizontalAxis = isDPadLeftPressed ? -1f : isDPadRightPressed ? 1f : 0f;
             float deltaTime = Time.fixedDeltaTime;
 
-            _horizontalMovement = horizontalAxis * moveSpeed * deltaTime;
+            _horizontalMovement = horizontalAxis * runFactor * moveSpeed * deltaTime;
 
             if (isJumpPressed && _isGrounded && !_jumpTriggered)
             {

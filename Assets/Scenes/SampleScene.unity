@@ -8915,7 +8915,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1019328964623908234, guid: d8d570859fbf44097928617c37608b22, type: 3}
       propertyPath: minDistanceToAttack
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1019328964623908236, guid: d8d570859fbf44097928617c37608b22, type: 3}
       propertyPath: m_Name
@@ -9314,6 +9314,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5823200122092989809, guid: 9b53eb8cedc424ba19be22c94e45c974, type: 3}
+      propertyPath: m_GravityScale
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5823200122092989811, guid: 9b53eb8cedc424ba19be22c94e45c974, type: 3}
       propertyPath: m_Name
       value: Player
@@ -9377,6 +9381,10 @@ PrefabInstance:
     - target: {fileID: 5823200122092989815, guid: 9b53eb8cedc424ba19be22c94e45c974, type: 3}
       propertyPath: m_SortingLayerID
       value: 1736109247
+      objectReference: {fileID: 0}
+    - target: {fileID: 5823200122092989819, guid: 9b53eb8cedc424ba19be22c94e45c974, type: 3}
+      propertyPath: jumpForce
+      value: 1800
       objectReference: {fileID: 0}
     - target: {fileID: 5823200122092989819, guid: 9b53eb8cedc424ba19be22c94e45c974, type: 3}
       propertyPath: groundCheckRadius
