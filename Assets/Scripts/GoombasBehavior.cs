@@ -8,17 +8,20 @@
 
 using System;
 using NoSuchCompany.Games.SuperMario.Constants;
+using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Extensions;
 using NoSuchCompany.Games.SuperMario.Helpers;
-using NoSuchCompany.Games.SuperMario.Strategies;
+using NoSuchCompany.Games.SuperMario.Strategies.Enemy;
 using UnityEngine;
 
 namespace NoSuchCompany.Games.SuperMario
 {
     #region Class
 
-    public class GoombasBehavior : MonoBehaviour
+    public class GoombasBehavior : MonoBehaviour, IEnemy
     {
+        private const float NoMovement = 0f;
+        
         //  Defines field (public for debuggability in the editor)
         public bool _jumpTriggered;
 
@@ -61,10 +64,14 @@ namespace NoSuchCompany.Games.SuperMario
 
         private readonly HorizontalMovementHistory _horizontalMovementHistory;
 
-        private AnalyzeSurroundings _analyzeSurroundings;
+        private EnemyContext _enemyContext;
 
         private Vector3 _velocity = Vector3.zero;
 
+        public float MoveSpeed => moveSpeed;
+
+        public Vector2 Position => transform.position;
+        
         public GoombasBehavior()
         {
             _jumpTriggered = false;
@@ -79,8 +86,13 @@ namespace NoSuchCompany.Games.SuperMario
                 return;
             }
 
-            _analyzeSurroundings ??= new AnalyzeSurroundings(this);
-            _analyzeSurroundings.Process();
+            var currentPlayer = FindObjectOfType<PlayerBehavior>();
+
+            if (currentPlayer == null)
+                return;
+            
+            _enemyContext ??= new EnemyContext(this, currentPlayer);
+            _enemyContext.Do();
         }
 
         public void FixedUpdate()
@@ -88,6 +100,16 @@ namespace NoSuchCompany.Games.SuperMario
             //  Reserved for physics. No inputs check.
 
             InternalMove(_horizontalMovement);
+        }
+
+        public EnemySurroundings GetSurroundings()
+        {
+            return EnemySurroundings.Get(this);
+        }
+
+        public void StandStill()
+        {
+            Move(NoMovement);
         }
 
         private void OnCollisionEnter2D(Collision2D otherCollision2D)
@@ -102,7 +124,7 @@ namespace NoSuchCompany.Games.SuperMario
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = _analyzeSurroundings != null && _analyzeSurroundings.MustAttack ? Color.red : Color.green;
+            Gizmos.color = _enemyContext != null && _enemyContext.IsAttacking ? Color.red : Color.green;
 
             Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
             Gizmos.DrawWireSphere(leftSideCheck.position, checkRadius);
@@ -123,13 +145,10 @@ namespace NoSuchCompany.Games.SuperMario
             _horizontalMovement = horizontalMovement;
         }
 
-        public bool IsBlocked(bool mustAttack, float horizontalMovement)
+        public bool IsBlocked(float horizontalMovement)
         {
             _isLeftSideBlocked = false;
             _isRightSideBlocked = false;
-
-            if (!mustAttack)
-                return false;
 
             if (!horizontalMovement.IsMoving())
                 return false;

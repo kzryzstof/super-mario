@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using NoSuchCompany.Games.SuperMario.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,7 +15,7 @@ namespace NoSuchCompany.Games.SuperMario
 {
     #region Class
 
-    public class PlayerBehavior : MonoBehaviour
+    public class PlayerBehavior : MonoBehaviour, IPlayer
     {
         public bool _jumpTriggered;
 
@@ -128,6 +129,8 @@ namespace NoSuchCompany.Games.SuperMario
             _isDead = true;
             playerAnimator.SetBool("IsDead", true);
         }
+
+        public Vector2 Position => transform.position;
     }
 
     #endregion

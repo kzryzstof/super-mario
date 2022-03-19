@@ -3,25 +3,15 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 16/03/2022 @ 22:04
+// Last change: 19/03/2022 @ 13:02
 // ==========================================================================
 
-namespace NoSuchCompany.Games.SuperMario.Strategies
+using UnityEngine;
+
+namespace NoSuchCompany.Games.SuperMario.Entities
 {
-    #region Interface
-
-    internal interface IEnemyStrategy
+    public interface IPlayer
     {
-        #region Methods
-
-        IEnemyStrategy Apply();
-
-        bool IsDone();
-
-        void Prepare();
-
-        #endregion
+        Vector2 Position { get; }
     }
-
-    #endregion
 }
