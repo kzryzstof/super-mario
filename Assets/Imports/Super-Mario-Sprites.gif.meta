@@ -826,7 +826,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -834,6 +834,258 @@ TextureImporter:
       bones: []
       spriteID: ee35ef9bc07f64f9bb8e85a675c8bc9f
       internalID: -1864209406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_35
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1189
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 984716d960cdb4b04aa025604f4d1b95
+      internalID: 135331875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_36
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1171
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 483fcacbd4a0442b482ffa821ae2eb3c
+      internalID: -592268276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_37
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1152
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c4d8a483f25d42259156c9b7ff75f31
+      internalID: 451689124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_38
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1133
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff7fdd165c3224858903ddc354ca0fe4
+      internalID: 1941433387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_39
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97f17311e8d7649a98694fdd7b82937d
+      internalID: 1144362329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_40
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 1094
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f57153b662cf43ac96ad6c7804a1907
+      internalID: -1393607497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_41
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 1057
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 315822d58e4cf466d89fcf8200be2b32
+      internalID: 1274593414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_42
+      rect:
+        serializedVersion: 2
+        x: 390
+        y: 1057
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c93dd849299d4b7e81884cc790884ff
+      internalID: 799668623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_43
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 1057
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae71c3f552685492d97aefd6ce2a6d2d
+      internalID: 150112162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_44
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 342
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed5889296f95e4db29f657832f6e21b6
+      internalID: -254268408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_45
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 342
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 155593423beb441b79824af2e4fec57f
+      internalID: -888827645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Super-Mario-Sprites_46
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 342
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b305b0ef81c134c678e476bf50fb61b0
+      internalID: 1837092361
       vertices: []
       indices: 
       edges: []
@@ -849,41 +1101,53 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Super-Mario-Sprites_13: -478614586
       Super-Mario-Sprites_18: -974507411
       Super-Mario-Sprites_14: -239958229
       Super-Mario-Sprites_0: -539013790
+      Super-Mario-Sprites_41: 1274593414
+      Super-Mario-Sprites_21: -1165842882
+      Super-Mario-Sprites_29: -1782623004
+      Super-Mario-Sprites_20: 496495760
+      Super-Mario-Sprites_26: -2068503680
+      Super-Mario-Sprites_45: -888827645
+      Super-Mario-Sprites_31: 2079549873
+      Super-Mario-Sprites_10: 1217400946
+      Super-Mario-Sprites_28: 1540358168
+      Super-Mario-Sprites_23: 903598952
+      Super-Mario-Sprites_17: -1000830096
+      Super-Mario-Sprites_44: -254268408
+      Super-Mario-Sprites_13: -478614586
+      Super-Mario-Sprites_6: 488893460
+      Super-Mario-Sprites_35: 135331875
+      Super-Mario-Sprites_33: -2091578832
       Super-Mario-Sprites_7: 2065623313
       Super-Mario-Sprites_22: -688809111
       Super-Mario-Sprites_27: -132374531
-      Super-Mario-Sprites_33: -2091578832
       Super-Mario-Sprites_19: 753138211
-      Super-Mario-Sprites_21: -1165842882
-      Super-Mario-Sprites_20: 496495760
-      Super-Mario-Sprites_29: -1782623004
+      Super-Mario-Sprites_32: -2115433544
+      Super-Mario-Sprites_43: 150112162
+      Super-Mario-Sprites_42: 799668623
       Super-Mario-Sprites_25: -1725716395
       Super-Mario-Sprites_30: -1901846548
       Super-Mario-Sprites_16: 1428266159
-      Super-Mario-Sprites_32: -2115433544
       Super-Mario-Sprites_24: -444703720
       Super-Mario-Sprites_4: -548982449
-      Super-Mario-Sprites_26: -2068503680
+      Super-Mario-Sprites_46: 1837092361
+      Super-Mario-Sprites_40: -1393607497
+      Super-Mario-Sprites_39: 1144362329
       Super-Mario-Sprites_3: -1860544036
       Super-Mario-Sprites_11: 240710136
       Super-Mario-Sprites_34: -1864209406
       Super-Mario-Sprites_15: -716849482
-      Super-Mario-Sprites_31: 2079549873
       Super-Mario-Sprites_8: 1229699774
       Super-Mario-Sprites_1: -1613336264
       Super-Mario-Sprites_2: 3621584
-      Super-Mario-Sprites_28: 1540358168
       Super-Mario-Sprites_9: 16559540
-      Super-Mario-Sprites_23: 903598952
-      Super-Mario-Sprites_10: 1217400946
-      Super-Mario-Sprites_17: -1000830096
+      Super-Mario-Sprites_37: 451689124
       Super-Mario-Sprites_5: 115539064
       Super-Mario-Sprites_12: 66240588
-      Super-Mario-Sprites_6: 488893460
+      Super-Mario-Sprites_36: -592268276
+      Super-Mario-Sprites_38: 1941433387
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
