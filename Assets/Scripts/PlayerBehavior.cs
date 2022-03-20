@@ -42,8 +42,6 @@ namespace NoSuchCompany.Games.SuperMario
 
         private float _horizontalMovement;
 
-        private bool _initialized;
-
         private Vector3 _velocity = Vector3.zero;
 
         public PlayerBehavior()
@@ -51,9 +49,6 @@ namespace NoSuchCompany.Games.SuperMario
             _jumpTriggered = false;
         }
 
-        private bool _countFrames;
-        private int _frameCountAtBeginning;
-        
         public void Update()
         {
             if (_isDead)
@@ -64,32 +59,16 @@ namespace NoSuchCompany.Games.SuperMario
 
             _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
 
-            if (_isGrounded && _countFrames)
-            {
-                AppLogger.Write(LogsLevels.PlayerControls, $"### Number of frames for a Jump: {Time.frameCount - _frameCountAtBeginning} frames");
-                _countFrames = false;
-            }
-        
-            // --> Stop counting Frames as soon as he is grounded.
-            
-            bool isDPadLeftPressed = _initialized && Gamepad.current.dpad.left.isPressed;
+            bool isDPadLeftPressed = Gamepad.current.dpad.left.isPressed;
             bool isDPadRightPressed = Gamepad.current.dpad.right.isPressed;
             bool isJumpPressed = Gamepad.current.buttonSouth.isPressed;
-
-            if (!_initialized && !Gamepad.current.dpad.left.isPressed)
-                _initialized = true;
-
             bool isRunningPressed = Gamepad.current.buttonWest.isPressed;
-            float runFactor = isRunningPressed ? 1.6f : 1f;
-            
-            //Debug.Log($"Player pressed the '{Gamepad.current.dpad.left.name}' button? '{isDPadLeftPressed}'");
-            //Debug.Log($"Player pressed the '{Gamepad.current.dpad.right.name}' button? '{isDPadRightPressed}'");
-            //Debug.Log($"Player pressed the '{Gamepad.current.buttonSouth.name}' button? '{isJumpPressed}'");
 
+            float speedFactor = isRunningPressed ? 1.6f : 1f;
             float horizontalAxis = isDPadLeftPressed ? -1f : isDPadRightPressed ? 1f : 0f;
             float deltaTime = Time.fixedDeltaTime;
 
-            _horizontalMovement = horizontalAxis * runFactor * moveSpeed * deltaTime;
+            _horizontalMovement = horizontalAxis * speedFactor * moveSpeed * deltaTime;
 
             if (isJumpPressed && _isGrounded && !_jumpTriggered)
             {
@@ -128,12 +107,7 @@ namespace NoSuchCompany.Games.SuperMario
 
             if (_jumpTriggered)
             {
-                // --> Start counting Frames as the jump is started.
-                _countFrames = true;
-                _frameCountAtBeginning = Time.frameCount;
-                
                 AppLogger.Write(LogsLevels.PlayerControls, $"--> Adding vertical force to the player as Jump has been triggered {Time.frameCount}");
-                
                 playerRigidbody.AddForce(new Vector2(0f, jumpForce));
                 _jumpTriggered = false;
             }
@@ -152,6 +126,7 @@ namespace NoSuchCompany.Games.SuperMario
         public void Kill()
         {
             _isDead = true;
+            enabled = false;
             playerAnimator.SetBool("IsDead", true);
         }
 
