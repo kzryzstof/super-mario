@@ -200,7 +200,7 @@ MonoBehaviour:
   _horizontalMovement: 0
   _name: 
   jumpForce: 600
-  moveSpeed: 10
+  moveSpeed: 150
   characterRigidbody: {fileID: 1019328964623908232}
   groundCheck: {fileID: 1019328963272814326}
   leftSideCheck: {fileID: 4625416074297878322}

@@ -105,11 +105,11 @@ Rigidbody2D:
   m_Mass: 1.5
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 6
   m_Material: {fileID: 0}
   m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &5823200122092989813
 CapsuleCollider2D:
@@ -162,7 +162,7 @@ MonoBehaviour:
   _jumpTriggered: 0
   _isGrounded: 0
   _isDead: 0
-  jumpForce: 1000
+  jumpForce: 1800
   moveSpeed: 250
   playerRigidbody: {fileID: 5823200122092989809}
   groundCheck: {fileID: 5823200123386785024}

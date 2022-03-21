@@ -7,10 +7,14 @@
 // ==========================================================================
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
+using NoSuchCompany.Games.SuperMario.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace NoSuchCompany.Games.SuperMario
 {
@@ -27,6 +31,8 @@ namespace NoSuchCompany.Games.SuperMario
         public float jumpForce;
 
         public float moveSpeed;
+
+        public Vector2 Position => transform.position;
 
         public Rigidbody2D playerRigidbody;
 
@@ -72,8 +78,7 @@ namespace NoSuchCompany.Games.SuperMario
 
             if (isJumpPressed && _isGrounded && !_jumpTriggered)
             {
-                AppLogger.Write(LogsLevels.PlayerControls, $"Player pressed jump: Is Grounded = {_isGrounded} - Jump Triggered = {_jumpTriggered} -- {Time.frameCount}");
-
+                AppLogger.Write(LogsLevels.PlayerControls, $"**** Player pressed jump: Is Grounded = {_isGrounded} -- {Time.frameCount}");
                 _jumpTriggered = true;
             }
         }
@@ -107,9 +112,12 @@ namespace NoSuchCompany.Games.SuperMario
 
             if (_jumpTriggered)
             {
-                AppLogger.Write(LogsLevels.PlayerControls, $"--> Adding vertical force to the player as Jump has been triggered {Time.frameCount}");
+                AppLogger.Write(LogsLevels.PlayerControls, $"--> Adding vertical force to the player as Jump has been triggered {Time.frameCount} {playerRigidbody.inertia}");
+                
                 playerRigidbody.AddForce(new Vector2(0f, jumpForce));
                 _jumpTriggered = false;
+                
+                AppLogger.Write(LogsLevels.PlayerControls, $"--> {playerRigidbody.inertia}");
             }
 
             Flip(playerRigidbody.velocity.x);
@@ -123,14 +131,16 @@ namespace NoSuchCompany.Games.SuperMario
             spriteRenderer.flipX = characterVelocity < -0.1f;
         }
 
-        public void Kill()
+        public async void Kill()
         {
             _isDead = true;
             enabled = false;
             playerAnimator.SetBool("IsDead", true);
-        }
 
-        public Vector2 Position => transform.position;
+            await Task.Delay(TimeSpan.FromSeconds(2d)).ConfigureAwait(true);
+                
+            LevelManager.Instance.ReloadCurrentLevel();
+        }
     }
 
     #endregion
