@@ -7,14 +7,12 @@
 // ==========================================================================
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 namespace NoSuchCompany.Games.SuperMario
 {

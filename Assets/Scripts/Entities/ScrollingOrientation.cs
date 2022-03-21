@@ -3,26 +3,15 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 16/03/2022 @ 22:05
+// Last change: 21/03/2022 @ 19:44
 // ==========================================================================
 
-using System;
-
-namespace NoSuchCompany.Games.SuperMario.Diagnostics
+namespace NoSuchCompany.Games.SuperMario.Entities
 {
-    #region Enum
-
-    [Flags]
-    public enum LogsLevels
+    public enum ScrollingOrientation
     {
-        None = 0,
-
-        EnemyState = 1,
+        Horizontal,
         
-        PlayerControls = 2,
-        
-        MovingPlatforms = 4,
+        Vertical
     }
-
-    #endregion
 }
