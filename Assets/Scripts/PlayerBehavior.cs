@@ -86,7 +86,9 @@ namespace NoSuchCompany.Games.SuperMario
         public void FixedUpdate()
         {
             //  Reserved for physics. No inputs check.
-
+            if (Position.x < Configurations.MinimumLeftPositionForPlayer && _horizontalMovement < 0f)
+                _horizontalMovement = 0f;
+            
             Move(_horizontalMovement);
         }
 

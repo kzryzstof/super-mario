@@ -17,9 +17,14 @@ namespace NoSuchCompany.Games.SuperMario
         #region Constants
 
         /// <summary>
-        /// Defines the minimum position of both the camera and the player.
+        /// Defines the minimum position of both the camera.
         /// </summary>
-        public const float MinimumLeftPosition = 4.5f;
+        public const float MinimumLeftPositionForCamera = 4.5f;
+
+        /// <summary>
+        /// Defines the minimum position of both the player.
+        /// </summary>
+        public const float MinimumLeftPositionForPlayer = -6.0f;
 
         public static readonly LogsLevels LogsLevels =
                 //LogsLevels.EnemyState
