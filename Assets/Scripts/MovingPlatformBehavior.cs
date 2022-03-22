@@ -89,7 +89,9 @@ namespace NoSuchCompany.Games.SuperMario
         
         private void MovePlatformTo(Vector3 targetPosition)
         {
-            transform.position = Vector3.MoveTowards(CurrentPosition, targetPosition, Math.Sign(_currentSpeed) * speed * Time.deltaTime);
+            float maxDistanceDelta = speed * Time.deltaTime * (scrollingOrientation == ScrollingOrientation.Vertical ? Math.Sign(_currentSpeed) : 1f);
+            
+            transform.position = Vector3.MoveTowards(CurrentPosition, targetPosition, maxDistanceDelta);
         }
 
         private Vector3 ComputeTargetPosition()
