@@ -32,6 +32,10 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         private Vector3 _velocity;
         private bool _isJumping;
         
+        private float _smoothedVelocityX;
+        private const float AccelerationTimeAirborne = 0.2f;
+        private const float AccelerationTimeGrounded = 0.1f;
+        
         //  Unity properties;
         public Animator animator;
         public SpriteRenderer spriteRenderer;
@@ -51,7 +55,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
         private bool CanJump()
         {
-            return _controller2D.Collisions.Below;
+            return _controller2D.Collisions.Below && !_controller2D.Collisions.Above;
         }
         
         private bool IsJumpPressed()
@@ -72,7 +76,9 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
                 _velocity.y = _jumpVelocity;
             }
 
-            _velocity.x = movementDirection.x * MoveSpeed;
+            float targetVelocityX = movementDirection.x * MoveSpeed;
+            _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _controller2D.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
+            
             _velocity.y += _gravity * Time.deltaTime;
             
             _controller2D.Move(_velocity * Time.deltaTime);
