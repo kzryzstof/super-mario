@@ -20,9 +20,13 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
     public sealed class Player : MonoBehaviour, IPlayer
     {
         //  Private fields
-        public const float Gravity = -64f;
+        private readonly float _gravity;
+        private readonly float _jumpVelocity;
+        private const float JumpHeight = 4.5f;
+        private const float TimeToJumpApex = 0.4f;
+
+
         private const float MoveSpeed = 10f;
-        private const float JumpVelocity = 22f;
         private readonly IInputManager _inputManager;
         private Controller2D _controller2D;
         private Vector3 _velocity;
@@ -35,6 +39,9 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         public Player()
         {
             _inputManager = new InputManager();
+            
+            _gravity = -(2f * JumpHeight) / Mathf.Pow(TimeToJumpApex, 2f);
+            _jumpVelocity = Mathf.Abs(_gravity) * TimeToJumpApex;
         }
         
         public void Start()
@@ -62,20 +69,25 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             if (CanJump() && IsJumpPressed())
             {
                 _isJumping = true;
-                _velocity.y = JumpVelocity;
+                _velocity.y = _jumpVelocity;
             }
 
             _velocity.x = movementDirection.x * MoveSpeed;
-            _velocity.y += Gravity * Time.deltaTime;
+            _velocity.y += _gravity * Time.deltaTime;
             
             _controller2D.Move(_velocity * Time.deltaTime);
 
+            ProcessAnimations();
+        }
+
+        private void ProcessAnimations()
+        {
             //  Process the animations.
             if (_isJumping)
             {
                 if (_controller2D.Collisions.Below)
                     _isJumping = false;
-                
+
                 animator.SetBool("IsJumping", _isJumping);
             }
 
