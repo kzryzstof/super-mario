@@ -3,28 +3,19 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 16/03/2022 @ 22:05
+// Last change: 24/03/2022 @ 20:27
 // ==========================================================================
 
-using System;
-
-namespace NoSuchCompany.Games.SuperMario.Diagnostics
+namespace NoSuchCompany.Games.SuperMario.Entities
 {
-    #region Enum
-
-    [Flags]
-    public enum LogsLevels
+    public interface ICollisions
     {
-        None = 0,
-
-        EnemyState = 1,
+        public bool Above { get; }
         
-        PlayerControls = 2,
+        public bool Below { get; }
         
-        MovingPlatforms = 4,
+        public bool Left { get; }
         
-        PlayerRaycasting = 8,
+        public bool Right { get; }
     }
-
-    #endregion
 }

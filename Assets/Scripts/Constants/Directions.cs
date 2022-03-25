@@ -3,28 +3,19 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 16/03/2022 @ 22:05
+// Last change: 24/03/2022 @ 19:58
 // ==========================================================================
 
-using System;
-
-namespace NoSuchCompany.Games.SuperMario.Diagnostics
+namespace NoSuchCompany.Games.SuperMario.Constants
 {
-    #region Enum
-
-    [Flags]
-    public enum LogsLevels
+    internal static class Directions
     {
-        None = 0,
-
-        EnemyState = 1,
+        public const float Upward = 1f;
         
-        PlayerControls = 2,
+        public const float Downward = -1f;
         
-        MovingPlatforms = 4,
+        public const float Right = 1f;
         
-        PlayerRaycasting = 8,
+        public const float Left = -1f;
     }
-
-    #endregion
 }

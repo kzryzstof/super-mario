@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using NoSuchCompany.Games.SuperMario.Behaviors;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -20,16 +21,16 @@ namespace NoSuchCompany.Games.SuperMario.Entities
 
         private readonly GoombasBehavior _goombasBehavior;
 
-        private readonly PlayerBehavior _playerBehavior;
+        private readonly IPlayer _player;
 
         #endregion
 
         #region Constructors
 
-        private EnemySurroundings(GoombasBehavior goombasBehavior, PlayerBehavior playerBehavior)
+        private EnemySurroundings(GoombasBehavior goombasBehavior, IPlayer player)
         {
             _goombasBehavior = goombasBehavior;
-            _playerBehavior = playerBehavior;
+            _player = player;
         }
 
         #endregion
@@ -38,14 +39,14 @@ namespace NoSuchCompany.Games.SuperMario.Entities
 
         public static EnemySurroundings Get(GoombasBehavior goombasBehavior)
         {
-            var playerBehavior = Object.FindObjectOfType<PlayerBehavior>();
+            var player = Object.FindObjectOfType<Player>();
 
-            return new EnemySurroundings(goombasBehavior, playerBehavior);
+            return new EnemySurroundings(goombasBehavior, player);
         }
 
         public bool IsAtSameLevel()
         {
-            return Math.Abs(_goombasBehavior.transform.position.y - _playerBehavior.transform.position.y) < 1f;
+            return Math.Abs(_goombasBehavior.transform.position.y - _player.Position.y) < 1f;
         }
 
         public float MoveTowardPlayer(float moveSpeed)
@@ -59,8 +60,8 @@ namespace NoSuchCompany.Games.SuperMario.Entities
 
         public bool MustAttack()
         {
-            if (_playerBehavior._isDead)
-                return false;
+            //if (_player._isDead)
+            //    return false;
 
             Vector2 distanceFromPlayer = GetDistanceFromPlayer();
 
@@ -69,7 +70,7 @@ namespace NoSuchCompany.Games.SuperMario.Entities
 
         public bool MustJump()
         {
-            Vector2 playerPosition = _playerBehavior.transform.position;
+            Vector2 playerPosition = _player.Position;
             Vector2 goombasPosition = _goombasBehavior.transform.position;
 
             return playerPosition.y > goombasPosition.y + 1f;
@@ -81,7 +82,7 @@ namespace NoSuchCompany.Games.SuperMario.Entities
 
         private Vector2 GetDistanceFromPlayer()
         {
-            Vector2 playerPosition = _playerBehavior.transform.position;
+            Vector2 playerPosition = _player.Position;
             Vector2 goombasPosition = _goombasBehavior.transform.position;
 
             return playerPosition - goombasPosition;

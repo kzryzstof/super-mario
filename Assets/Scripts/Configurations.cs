@@ -31,6 +31,7 @@ namespace NoSuchCompany.Games.SuperMario
                 //LogsLevels.EnemyState
                 //LogsLevels.PlayerControls
                 //LogsLevels.MovingPlatforms
+                //LogsLevels.PlayerRaycasting
             ;
 
         #endregion

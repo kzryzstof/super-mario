@@ -3,28 +3,21 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 16/03/2022 @ 22:05
+// Last change: 24/03/2022 @ 20:13
 // ==========================================================================
 
-using System;
+using UnityEngine;
 
-namespace NoSuchCompany.Games.SuperMario.Diagnostics
+namespace NoSuchCompany.Games.SuperMario.Services
 {
-    #region Enum
-
-    [Flags]
-    public enum LogsLevels
+    public interface IInputManager
     {
-        None = 0,
-
-        EnemyState = 1,
+        bool IsLeftPressed { get; }
         
-        PlayerControls = 2,
+        bool IsRightPressed { get; }
         
-        MovingPlatforms = 4,
+        bool IsJumpPressed { get; }
         
-        PlayerRaycasting = 8,
+        Vector2 Direction { get; }
     }
-
-    #endregion
 }

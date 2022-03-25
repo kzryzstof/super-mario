@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using NoSuchCompany.Games.SuperMario.Behaviors;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Extensions;
@@ -82,7 +83,7 @@ namespace NoSuchCompany.Games.SuperMario
                 return;
             }
 
-            var currentPlayer = FindObjectOfType<PlayerBehavior>();
+            var currentPlayer = FindObjectOfType<Player>();
 
             if (currentPlayer == null)
                 return;
@@ -113,8 +114,8 @@ namespace NoSuchCompany.Games.SuperMario
             if (otherCollision2D.gameObject.CompareTag(Tags.Player))
             {
                 _isWinner = true;
-                var playerBehavior = otherCollision2D.transform.GetComponent<PlayerBehavior>();
-                playerBehavior.Kill();
+                var playerBehavior = otherCollision2D.transform.GetComponent<Player>();
+                //playerBehavior.Kill();
             }
         }
 

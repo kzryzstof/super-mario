@@ -3,28 +3,21 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 16/03/2022 @ 22:05
+// Last change: 24/03/2022 @ 19:38
 // ==========================================================================
 
-using System;
+using UnityEngine;
 
-namespace NoSuchCompany.Games.SuperMario.Diagnostics
+namespace NoSuchCompany.Games.SuperMario.Entities
 {
-    #region Enum
-
-    [Flags]
-    public enum LogsLevels
+    internal struct RaycastOrigins
     {
-        None = 0,
-
-        EnemyState = 1,
+        public Vector2 TopLeft;
         
-        PlayerControls = 2,
+        public Vector2 TopRight;
         
-        MovingPlatforms = 4,
+        public Vector2 BottomLeft;
         
-        PlayerRaycasting = 8,
+        public Vector2 BottomRight;
     }
-
-    #endregion
 }
