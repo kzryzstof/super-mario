@@ -39,7 +39,7 @@ namespace NoSuchCompany.Games.SuperMario.Entities
 
         public static EnemySurroundings Get(GoombasBehavior goombasBehavior)
         {
-            var player = Object.FindObjectOfType<Player>();
+            var player = Object.FindObjectOfType<PlayerBehavior>();
 
             return new EnemySurroundings(goombasBehavior, player);
         }

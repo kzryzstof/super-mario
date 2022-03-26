@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5823200122092989814}
   - component: {fileID: 5823200122092989815}
-  - component: {fileID: 5823200122092989809}
   - component: {fileID: 5823200122092989812}
   - component: {fileID: -9038055481836399825}
   - component: {fileID: 6929815535824975350}
@@ -90,27 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &5823200122092989809
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5823200122092989811}
-  m_BodyType: 0
-  m_Simulated: 0
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1.5
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 6
-  m_Material: {fileID: 0}
-  m_Interpolate: 2
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
 --- !u!95 &5823200122092989812
 Animator:
   serializedVersion: 4
@@ -174,7 +152,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0000076293945, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -185,7 +163,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.7531891, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &-3443580180711313212
 MonoBehaviour:
@@ -196,12 +174,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5823200122092989811}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e33ad920cb7e47ef95cd13dafe2971a, type: 3}
+  m_Script: {fileID: 11500000, guid: 31fa47cf2dc5e48a7912e0ddca8974ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 768
 --- !u!114 &-7697353800816727971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,8 +189,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5823200122092989811}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05d6061cd584a44889ebd69192f6b7e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 54bdd6c3cb660402cbdaeda33404bde9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5823200122092989812}
   spriteRenderer: {fileID: 5823200122092989815}
+  debugGravity: -56.249996

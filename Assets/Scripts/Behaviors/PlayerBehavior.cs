@@ -14,10 +14,10 @@ using UnityEngine;
 
 namespace NoSuchCompany.Games.SuperMario.Behaviors
 {
-    [RequireComponent(typeof(Controller2D))]
+    [RequireComponent(typeof(CharacterBehavior))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public sealed class Player : MonoBehaviour, IPlayer
+    public sealed class PlayerBehavior : MonoBehaviour, IPlayer
     {
         //  Private fields
         private readonly float _gravity;
@@ -25,10 +25,9 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         private const float JumpHeight = 4.5f;
         private const float TimeToJumpApex = 0.4f;
 
-
         private const float MoveSpeed = 10f;
         private readonly IInputManager _inputManager;
-        private Controller2D _controller2D;
+        private CharacterBehavior _characterBehavior;
         private Vector3 _velocity;
         private bool _isJumping;
         
@@ -40,22 +39,25 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         public Animator animator;
         public SpriteRenderer spriteRenderer;
         
-        public Player()
+        //  Debug
+        public float debugGravity;
+        
+        public PlayerBehavior()
         {
             _inputManager = new InputManager();
             
-            _gravity = -(2f * JumpHeight) / Mathf.Pow(TimeToJumpApex, 2f);
+            _gravity = debugGravity = -(2f * JumpHeight) / Mathf.Pow(TimeToJumpApex, 2f);
             _jumpVelocity = Mathf.Abs(_gravity) * TimeToJumpApex;
         }
         
         public void Start()
         {
-            _controller2D = GetComponent<Controller2D>();
+            _characterBehavior = GetComponent<CharacterBehavior>();
         }
 
         private bool CanJump()
         {
-            return _controller2D.Collisions.Below && !_controller2D.Collisions.Above;
+            return _characterBehavior.Collisions.Below && !_characterBehavior.Collisions.Above;
         }
         
         private bool IsJumpPressed()
@@ -65,7 +67,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
         public void Update()
         {
-            if (_controller2D.Collisions.Above || _controller2D.Collisions.Below)
+            if (_characterBehavior.Collisions.Above || _characterBehavior.Collisions.Below)
                 _velocity.y = Movements.None;
             
             Vector2 movementDirection = _inputManager.Direction;
@@ -77,11 +79,11 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             }
 
             float targetVelocityX = movementDirection.x * MoveSpeed;
-            _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _controller2D.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
+            _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
             
             _velocity.y += _gravity * Time.deltaTime;
             
-            _controller2D.Move(_velocity * Time.deltaTime);
+            _characterBehavior.Move(_velocity * Time.deltaTime);
 
             ProcessAnimations();
         }
@@ -91,7 +93,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             //  Process the animations.
             if (_isJumping)
             {
-                if (_controller2D.Collisions.Below)
+                if (_characterBehavior.Collisions.Below)
                     _isJumping = false;
 
                 animator.SetBool("IsJumping", _isJumping);

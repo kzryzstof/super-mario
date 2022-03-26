@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 1540670699920395446}
   - component: {fileID: 1540670699920395447}
   - component: {fileID: 1540670699920395448}
-  - component: {fileID: 1540670699920395449}
-  - component: {fileID: 1540670699920395451}
+  - component: {fileID: 3395740635691301890}
   m_Layer: 0
   m_Name: MovingPlatform_0
   m_TagString: Untagged
@@ -96,37 +95,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1540670699920395445}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e8fafefe94c740fca8ded3b4d346816, type: 3}
+  m_Script: {fileID: 11500000, guid: 36f2919453e634eb39248bc456fb71a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minOffset: -4
-  maxOffset: 0
-  speed: 2
-  scrollingOrientation: 1
-  scrollingMode: 1
---- !u!50 &1540670699920395449
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1540670699920395445}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 0.0001
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
---- !u!68 &1540670699920395451
-EdgeCollider2D:
+  move: {x: 0, y: -1}
+  characterMask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!61 &3395740635691301890
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -139,11 +116,15 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.49962473}
   m_EdgeRadius: 0
-  m_Points:
-  - {x: -0.5, y: 0.2}
-  - {x: 0.5, y: 0.2}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0

@@ -83,7 +83,7 @@ namespace NoSuchCompany.Games.SuperMario
                 return;
             }
 
-            var currentPlayer = FindObjectOfType<Player>();
+            var currentPlayer = FindObjectOfType<PlayerBehavior>();
 
             if (currentPlayer == null)
                 return;
@@ -114,7 +114,7 @@ namespace NoSuchCompany.Games.SuperMario
             if (otherCollision2D.gameObject.CompareTag(Tags.Player))
             {
                 _isWinner = true;
-                var playerBehavior = otherCollision2D.transform.GetComponent<Player>();
+                var playerBehavior = otherCollision2D.transform.GetComponent<PlayerBehavior>();
                 //playerBehavior.Kill();
             }
         }
