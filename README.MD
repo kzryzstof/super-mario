@@ -8,4 +8,9 @@ I was curious to know how the game would feel if the enemies were a bit more sma
 
 ### Goombas
 
-![Goombas basic attack](Documentation/Goombas-Basic-Attack.gif)
+![Goombas basic attack](Documentation/Level_1-1.gif)
+
+
+## Platforms
+
+![Moving platform](Documentation/Platforms_1.gif)
