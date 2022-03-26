@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Diagnostics;
+using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Services;
 using UnityEngine;
 
@@ -24,11 +25,15 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         private const float DefaultRayLength = 0.5f;
         private readonly IRaycaster _raycaster;
         private readonly Guid _id;
+        private BoxCollider2D _boxCollider2D;
         
         //  Unity injected properties.
         public Vector2 move;
         public LayerMask characterMask;
         public int rayCount;
+        public ScrollingMode scrollingMode;
+        public float minOffset;
+        public float maxOffset;
         
         public PlatformBehavior()
         {
@@ -38,13 +43,16 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         
         public void Start()
         {
-            var boxCollider2D = GetComponent<BoxCollider2D>();
-            _raycaster.Initialize(boxCollider2D, rayCount == 0 ? DefaultRayCount : rayCount);
+            _boxCollider2D = GetComponent<BoxCollider2D>();
+            _raycaster.Initialize(_boxCollider2D, rayCount == 0 ? DefaultRayCount : rayCount);
         }
 
         public void Update()
-        { 
-            Vector3 platformVelocity = move * Time.deltaTime;
+        {
+            ProcessReset();
+            
+            //Vector3 platformVelocity = move * Time.deltaTime;
+            Vector3 platformVelocity = MovePlatform();
             
             MovePassengers(platformVelocity);
             
@@ -62,8 +70,6 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             
             List<IRaycastCollision> raycastHits = _raycaster.FindVerticalHitsOnly(platformVelocity, characterMask).ToList();
 
-            AppLogger.Write(LogsLevels.None, $"[{_id.ToString()[..8]}] Found {raycastHits.Count} hits");
-            
             float platformDirectionX = Mathf.Sign(platformVelocity.x);
             float platformDirectionY = Mathf.Sign(platformVelocity.y);
             
@@ -94,6 +100,45 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             }
             */
             
+        }
+
+        private bool _hasReset;
+
+        private void ProcessReset()
+        {
+            if (!_hasReset)
+                return;
+
+            _boxCollider2D.enabled = true;
+            _hasReset = false;
+        }
+        
+        private Vector3 ResetPosition(float translateX, float translateY)
+        {
+            _boxCollider2D.enabled = false;
+            _hasReset = true;
+            return new Vector3(translateX, translateY);
+        }
+        
+        private Vector3 MovePlatform()
+        {
+            Vector3 platformVelocity = move * Time.deltaTime;
+
+            if (scrollingMode == ScrollingMode.Continuous)
+            {
+                if (Mathf.Sign(move.y) == Directions.Downward)
+                {
+                    if (transform.position.y < minOffset)
+                        platformVelocity = ResetPosition(Movements.None, maxOffset - minOffset);
+                }
+                else
+                {
+                    if (transform.position.y > maxOffset)
+                        platformVelocity = ResetPosition(Movements.None, minOffset - maxOffset);
+                }
+            }
+
+            return platformVelocity;
         }
     }
 }
