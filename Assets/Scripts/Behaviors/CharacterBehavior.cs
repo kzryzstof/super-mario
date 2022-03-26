@@ -30,14 +30,14 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
         public CharacterBehavior()
         {
-            _raycaster = new Raycaster(2);
+            _raycaster = new Raycaster();
         }
         
         public void Start()
         {
             var boxCollider2D = GetComponent<BoxCollider2D>();
             
-            _raycaster.Initialize(boxCollider2D, 2);
+            _raycaster.Initialize(boxCollider2D, 4);
         }
 
         public void Move(Vector3 objectVelocity)

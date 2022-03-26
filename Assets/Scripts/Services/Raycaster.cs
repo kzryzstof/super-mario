@@ -6,6 +6,7 @@
 // Last change: 25/03/2022 @ 19:11
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Diagnostics;
@@ -33,8 +34,6 @@ namespace NoSuchCompany.Games.SuperMario.Services
 
         public Raycaster(float? fixedRayLength = null)
         {
-            _horizontalRayCount = _verticalRayCount = DefaultRayCount;
-            
             _collisions = new Collisions();
             _raycastOrigins = new RaycastOrigins();
             _debugRaycasts = new List<string>();
@@ -48,6 +47,51 @@ namespace NoSuchCompany.Games.SuperMario.Services
             _boxCollider2D = boxCollider2D;
             
             CalculateRaySpacing();
+        }
+        
+        public IEnumerable<IRaycastCollision> FindVerticalHitsOnly(Vector2 objectVelocity, LayerMask collisionMask)
+        {
+            UpdateRaycastOrigins();
+
+            var raycastHits = new HashSet<IRaycastCollision>();
+            
+            float verticalDirection = Mathf.Sign(objectVelocity.y);
+            float rayLength = _fixedRayLength ?? Mathf.Abs(objectVelocity.y) + SkinWidth;
+
+            for (var verticalRayId = 0; verticalRayId < _verticalRayCount; verticalRayId++)
+            {
+                //  Based on the direction of the object, computes the point once the velocity is applied.
+                Vector2 rayOrigin = verticalDirection == Directions.Downward ? _raycastOrigins.BottomLeft : _raycastOrigins.TopLeft;
+                rayOrigin += Vector2.right * (_verticalRaySpacing * verticalRayId);
+
+                //  Draw a ray to see if the player hits something along the way.
+                RaycastHit2D isCollision = Physics2D.Raycast(rayOrigin, Vector2.up * verticalDirection, rayLength, collisionMask);
+
+                Debug.DrawRay(rayOrigin, Vector2.up * verticalDirection * (_fixedRayLength ?? rayLength), isCollision ? Color.red : Color.green);
+
+                if (!isCollision)
+                    continue;
+                
+                var raycastHit = new RaycastCollision(isCollision.distance - SkinWidth, isCollision.transform);
+
+                if (raycastHits.Contains(raycastHit))
+                    continue;
+
+                raycastHits.Add(raycastHit);
+            }
+
+            return raycastHits;
+        }
+
+        public void ApplyCollisions(ref Vector3 objectVelocity, LayerMask collisionMask)
+        {
+            UpdateRaycastOrigins();
+
+            _collisions.ResetAll();
+            
+            ProcessHorizontalCollisions(ref objectVelocity, collisionMask);
+            
+            ProcessVerticalCollisions(ref objectVelocity, collisionMask);
         }
         
         private void CalculateRaySpacing()
@@ -79,51 +123,6 @@ namespace NoSuchCompany.Games.SuperMario.Services
             return bounds;
         }
 
-        public IEnumerable<IRaycastCollision> FindVerticalHitsOnly(Vector2 objectVelocity, LayerMask collisionMask)
-        {
-            UpdateRaycastOrigins();
-
-            var raycastHits = new HashSet<IRaycastCollision>();
-            
-            float verticalDirection = Mathf.Sign(objectVelocity.y);
-            float rayLength = _fixedRayLength ?? Mathf.Abs(objectVelocity.y) + SkinWidth;
-
-            for (var verticalRayId = 0; verticalRayId < _verticalRayCount; verticalRayId++)
-            {
-                //  Based on the direction of the object, computes the point once the velocity is applied.
-                Vector2 rayOrigin = verticalDirection == Directions.Downward ? _raycastOrigins.BottomLeft : _raycastOrigins.TopLeft;
-                rayOrigin += Vector2.right * (_verticalRaySpacing * verticalRayId);
-
-                //  Draw a ray to see if the player hits something along the way.
-                RaycastHit2D isCollision = Physics2D.Raycast(rayOrigin, Vector2.up * verticalDirection, rayLength, collisionMask);
-
-                Debug.DrawRay(rayOrigin, Vector2.up * verticalDirection * rayLength, isCollision ? Color.red : Color.green);
-
-                if (!isCollision)
-                    continue;
-                
-                var raycastHit = new RaycastCollision(isCollision.distance - SkinWidth, isCollision.transform);
-
-                if (raycastHits.Contains(raycastHit))
-                    continue;
-
-                raycastHits.Add(raycastHit);
-            }
-
-            return raycastHits;
-        }
-
-        public void ApplyCollisions(ref Vector3 objectVelocity, LayerMask collisionMask)
-        {
-            UpdateRaycastOrigins();
-
-            _collisions.ResetAll();
-            
-            ProcessVerticalCollisions(ref objectVelocity, collisionMask);
-            
-            ProcessHorizontalCollisions(ref objectVelocity, collisionMask);
-        }
-        
         private void ProcessVerticalCollisions(ref Vector3 objectVelocity, LayerMask collisionMask)
         {
             if (objectVelocity.y == Movements.None)
@@ -144,7 +143,7 @@ namespace NoSuchCompany.Games.SuperMario.Services
                 //  Draw a ray to see if the object hits something along the way.
                 RaycastHit2D isCollision = Physics2D.Raycast(rayOrigin, Vector2.up * verticalDirection, rayLength, collisionMask);
                 
-                Debug.DrawRay(rayOrigin, Vector2.up * verticalDirection * rayLength, isCollision ? Color.red : Color.green);
+                Debug.DrawRay(rayOrigin, Vector2.up * verticalDirection * 1f, isCollision ? Color.red : Color.green);
 
                 string collisionInfo = isCollision ? isCollision.rigidbody?.name : "N/A";
                 _debugRaycasts.Add($"[{rayOrigin.x}, {rayOrigin.y}]: {collisionInfo}");
@@ -154,9 +153,13 @@ namespace NoSuchCompany.Games.SuperMario.Services
 
                 //  There is something along the way. Let's readjust the velocity to
                 //  not go too far and stop at the obstacle.
+                float verticalVelocity = (isCollision.distance - SkinWidth) * verticalDirection;
+
+                if (Mathf.Abs(verticalVelocity) <= SkinWidth)
+                    verticalVelocity = 0f;
                 
-                objectVelocity.y = (isCollision.distance - SkinWidth) * verticalDirection;
-                    
+                objectVelocity.y = verticalVelocity;
+                   
                 //  Readjust the rayLength for the other remaining rays. If there is an
                 //  obstacle detected by the other ray but further down, we still want 
                 //  to keep the velocity for the closest obstacle.
@@ -188,7 +191,7 @@ namespace NoSuchCompany.Games.SuperMario.Services
                 //  Draw a ray to see if the player hits something along the way.
                 RaycastHit2D isCollision = Physics2D.Raycast(rayOrigin, Vector2.right * horizontalDirection, rayLength, collisionMask);
 
-                Debug.DrawRay(rayOrigin, Vector2.right * horizontalDirection * rayLength, isCollision ? Color.red : Color.green);
+                Debug.DrawRay(rayOrigin, Vector2.right * horizontalDirection * 1f, isCollision ? Color.red : Color.green);
 
                 string collisionInfo = isCollision ? isCollision.collider?.name : "N/A";
                 _debugRaycasts.Add($"[{rayOrigin.x}, {rayOrigin.y}]: {collisionInfo}");
@@ -196,9 +199,14 @@ namespace NoSuchCompany.Games.SuperMario.Services
                 if (!isCollision)
                     continue;
 
+                float horizontalVelocity = (isCollision.distance - SkinWidth) * horizontalDirection;
+
+                if (Mathf.Abs(horizontalVelocity) <= SkinWidth)
+                    horizontalVelocity = 0f;
+                
                 //  There is something along the way. Let's readjust the velocity to
                 //  not go too far and stop at the obstacle.
-                objectVelocity.x = (isCollision.distance - SkinWidth) * horizontalDirection;
+                objectVelocity.x = horizontalVelocity;
                     
                 //  Readjust the rayLength for the other remaining rays. If there is an
                 //  obstacle detected by the other ray but further down, we still want 
