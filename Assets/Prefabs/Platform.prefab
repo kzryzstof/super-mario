@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 423050476407690055}
   - component: {fileID: 6939866121367008281}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MovingPlatform_0 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4756394483992122243}
   - component: {fileID: 2441657699736155999}
   - component: {fileID: 2148924570374745584}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36f2919453e634eb39248bc456fb71a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move: {x: -0.1, y: 0}
+  move: {x: 0.1, y: 0}
   characterMask:
     serializedVersion: 2
     m_Bits: 128
@@ -173,7 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5158423775662431640}
   - component: {fileID: 7045772509879511631}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MovingPlatform_0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3375963534106764556}
   - component: {fileID: 1030587474266878992}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MovingPlatform_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
