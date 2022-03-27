@@ -53,6 +53,9 @@ namespace NoSuchCompany.Games.SuperMario.Services
         {
             UpdateRaycastOrigins();
 
+            //  Avoid collision with itself during the raycasting phase.
+            _boxCollider2D.enabled = false;
+            
             var raycastHits = new HashSet<IRaycastCollision>();
             
             float verticalDirection = Mathf.Sign(objectVelocity.y);
@@ -80,6 +83,8 @@ namespace NoSuchCompany.Games.SuperMario.Services
                 raycastHits.Add(raycastHit);
             }
 
+            _boxCollider2D.enabled = true;
+            
             return raycastHits;
         }
 
@@ -89,9 +94,14 @@ namespace NoSuchCompany.Games.SuperMario.Services
 
             _collisions.ResetAll();
             
+            //  Avoid collision with itself during the raycasting phase.
+            _boxCollider2D.enabled = false;
+            
             ProcessHorizontalCollisions(ref objectVelocity, collisionMask);
             
             ProcessVerticalCollisions(ref objectVelocity, collisionMask);
+            
+            _boxCollider2D.enabled = true;
         }
         
         private void CalculateRaySpacing()
