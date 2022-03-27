@@ -6,6 +6,8 @@
 // Last change: 24/03/2022 @ 19:29
 // ==========================================================================
 
+using System.Collections.Generic;
+using System.Linq;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Services;
@@ -19,21 +21,23 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
     [RequireComponent(typeof(SpriteRenderer))]
     public sealed class EnemyBehavior : MonoBehaviour, IEnemy
     {
-        //  Private fields
+        //  Constants
         private readonly float _gravity;
         private readonly float _jumpVelocity;
         private const float JumpHeight = 2.5f;
         private const float TimeToJumpApex = 0.4f;
-
         private readonly EnemyInputManager _inputManager;
+        private const float AccelerationTimeAirborne = 0.2f;
+        private const float AccelerationTimeGrounded = 0.1f;
+
+        //  Private fields
         private EnemyContext _enemyContext;
         private CharacterBehavior _characterBehavior;
         private Vector3 _velocity;
         private bool _isJumping;
-        
+        private bool _isDead;
         private float _smoothedVelocityX;
-        private const float AccelerationTimeAirborne = 0.2f;
-        private const float AccelerationTimeGrounded = 0.1f;
+        private IPlayer _player;
         
         //  Unity properties;
         public Animator animator;
@@ -68,26 +72,26 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         {
             if (false == IsPlayerReady())
                 return;
-
+            
+            if (_isDead)
+                return;
+            
             _enemyContext.Think();
 
             if (_characterBehavior.Collisions.Above || _characterBehavior.Collisions.Below)
                 _velocity.y = Movements.None;
-            
-            Vector2 movementDirection = _inputManager.Direction;
 
-            if (CanJump() && IsJumpPressed())
-            {
-                _isJumping = true;
-                _velocity.y = _jumpVelocity;
-            }
+            if (IsAttacked())
+                Kill();
 
-            float targetVelocityX = movementDirection.x * MoveSpeed;
-            _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
+            if (IsJumpRequested())
+                TriggerJump();
+
+            UpdateHorizontalVelocity();
+
+            UpdateVerticalVelocity();
             
-            _velocity.y += _gravity * Time.deltaTime;
-            
-            _characterBehavior.Move(_velocity * Time.deltaTime);
+            Move();
 
             ProcessAnimations();
         }
@@ -106,15 +110,58 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
                 _ => false
             };
         }
+
+        private void Move()
+        {
+            _characterBehavior.Move(_velocity * Time.deltaTime);
+        }
+
+        private void UpdateVerticalVelocity()
+        {
+            _velocity.y += _gravity * Time.deltaTime;
+        }
+
+        private void UpdateHorizontalVelocity()
+        {
+            Vector2 movementDirection = !_isDead ? _inputManager.Direction : Vector2.zero;
+
+            float targetVelocityX = movementDirection.x * MoveSpeed;
+            _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
+        }
+
+        private void TriggerJump()
+        {
+            _isJumping = true;
+            _velocity.y = _jumpVelocity;
+        }
+
+        private bool IsJumpRequested()
+        {
+            return CanJump() && IsJumpPressed();
+        }
+
+        private void Kill()
+        {
+            _velocity.x = Movements.None;
+            _isDead = true;
+            _characterBehavior.Kill();
+            _player.OnEnemyAttacked();
+        }
+
+        private bool IsAttacked()
+        {
+            IEnumerable<IRaycastCollision> raycastHits = _characterBehavior.FindVerticalHits(ref _velocity);
+            return raycastHits.Any(rayCastHit => rayCastHit.Transform.gameObject.CompareTag(Tags.Player));
+        }
         
         private bool IsPlayerReady()
         {
-            var currentPlayer = FindObjectOfType<PlayerBehavior>();
+            _player = FindObjectOfType<PlayerBehavior>();
 
-            if (currentPlayer == null)
+            if (_player == null)
                 return false;
 
-            _enemyContext ??= new EnemyContext(this, currentPlayer, _inputManager);
+            _enemyContext ??= new EnemyContext(this, _player, _inputManager);
             return true;
         }
 
@@ -136,6 +183,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
             Flip(_velocity.x);
             animator.SetFloat("Speed", Mathf.Abs(_velocity.x));
+            animator.SetBool("IsDead", _isDead);
         }
 
         private void Flip(float characterVelocity)

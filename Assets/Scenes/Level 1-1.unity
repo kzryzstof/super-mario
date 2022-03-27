@@ -7750,7 +7750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1019328964623908234, guid: d8d570859fbf44097928617c37608b22, type: 3}
       propertyPath: supportsJumpScare
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1019328964623908236, guid: d8d570859fbf44097928617c37608b22, type: 3}
       propertyPath: m_Name
@@ -7828,7 +7828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1019328964623908234, guid: d8d570859fbf44097928617c37608b22, type: 3}
       propertyPath: supportsJumpScare
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1019328964623908234, guid: d8d570859fbf44097928617c37608b22, type: 3}
       propertyPath: minDistanceToAttack
@@ -8040,11 +8040,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3260496957371376387, guid: f3d18240a2acd42f5928bbf978b66185, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5005262
+      value: -2.93
       objectReference: {fileID: 0}
     - target: {fileID: 3260496957371376387, guid: f3d18240a2acd42f5928bbf978b66185, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.491
+      value: -2.94
       objectReference: {fileID: 0}
     - target: {fileID: 3260496957371376387, guid: f3d18240a2acd42f5928bbf978b66185, type: 3}
       propertyPath: m_LocalPosition.z

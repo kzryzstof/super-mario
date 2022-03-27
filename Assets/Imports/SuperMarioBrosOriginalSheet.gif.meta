@@ -238,7 +238,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -259,7 +259,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -280,7 +280,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -288,6 +288,27 @@ TextureImporter:
       bones: []
       spriteID: c84d8d4b4b2404bc2a6257418972d230
       internalID: 334682554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SuperMarioBrosOriginalSheet_9
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 359
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1059179dee994a73ac002ccaffa1b69
+      internalID: 1862868079
       vertices: []
       indices: 
       edges: []
@@ -307,6 +328,7 @@ TextureImporter:
       SuperMarioBrosOriginalSheet_3: -809379968
       SuperMarioBrosOriginalSheet_0: -1406355326
       SuperMarioBrosOriginalSheet_8: 334682554
+      SuperMarioBrosOriginalSheet_9: 1862868079
       SuperMarioBrosOriginalSheet_4: -531745539
       SuperMarioBrosOriginalSheet_6: -1024186332
       SuperMarioBrosOriginalSheet_2: 282126334

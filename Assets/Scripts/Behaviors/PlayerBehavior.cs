@@ -35,6 +35,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         private CharacterBehavior _characterBehavior;
         private Vector3 _velocity;
         private bool _isJumping;
+        private bool _isEnemyAttacked;
         private float _smoothedVelocityX;
         
         //  Unity properties;
@@ -71,6 +72,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             if (InitiateJump())
             {
                 _isJumping = true;
+                _isEnemyAttacked = false;
                 _velocity.y = _maximumJumpVelocity;
             }
 
@@ -90,9 +92,14 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             ProcessAnimations();
         }
 
+        public void OnEnemyAttacked()
+        {
+            _isEnemyAttacked = true;
+        }
+        
         private bool InitiateJump()
         {
-            return CanJump() && IsJumpPressed();
+            return (CanJump() && IsJumpPressed()) || _isEnemyAttacked;
         }
         
         private bool AbortJump()
@@ -116,7 +123,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             {
                 if (_characterBehavior.Collisions.Below)
                     _isJumping = false;
-
+                
                 animator.SetBool("IsJumping", _isJumping);
             }
 

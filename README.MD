@@ -8,7 +8,21 @@ I was curious to know how the game would feel if the enemies were a bit more sma
 
 ### Goombas
 
-![Goombas basic attack](Documentation/Level_1-1.gif)
+#### Death
+
+Goombas can be killed if the player touches them from above.
+
+![Goombas death](Documentation/Enemy_Death.gif)
+
+#### Strategies
+
+Goombas have different strategies to attack the player. 
+
+By default, they will not move until the player reaches a certain distance. And when the player gets too close, Goombas will pursue the player until the enemy catches the player or the player is too far away.
+
+To throw the player off a bit, Goombas can do jump scares if the player is really close.
+
+![Goombas basic attack](Documentation/Enemy_JumpScare.gif)
 
 
 ## Platforms

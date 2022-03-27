@@ -13,5 +13,7 @@ namespace NoSuchCompany.Games.SuperMario.Entities
     public interface IPlayer
     {
         Vector2 Position { get; }
+
+        void OnEnemyAttacked();
     }
 }

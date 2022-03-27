@@ -6,6 +6,9 @@
 // Last change: 24/03/2022 @ 19:34
 // ==========================================================================
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Services;
 using UnityEngine;
@@ -45,6 +48,17 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             _raycaster.ApplyCollisions(ref objectVelocity, collisionMask);
             
             transform.Translate(objectVelocity);
+        }
+
+        public IEnumerable<IRaycastCollision> FindVerticalHits(ref Vector3 characterVelocity)
+        {
+            return _raycaster.FindVerticalHitsOnly(characterVelocity, collisionMask).ToList();
+        }
+
+        public void Kill()
+        {
+            gameObject.layer = LayerMask.NameToLayer(Layers.Deads);
+            Destroy (gameObject, (int)TimeSpan.FromSeconds(2).TotalSeconds);
         }
     }
 }
