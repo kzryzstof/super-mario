@@ -7,17 +7,20 @@
 // ==========================================================================
 
 using NoSuchCompany.Games.SuperMario.Constants;
+using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Services;
 using UnityEngine;
 
-namespace NoSuchCompany.Games.SuperMario
+namespace NoSuchCompany.Games.SuperMario.Behaviors
 {
     #region Class
 
     public class LevelBehavior : MonoBehaviour
     {
-        private void OnTriggerEnter2D(Collider2D otherCollider2D)
+        public void OnTriggerEnter2D(Collider2D otherCollider2D)
         {
+            AppLogger.Write(LogsLevels.None, $"Touched! {otherCollider2D.tag}");
+            
             if (otherCollider2D.CompareTag(Tags.Player))
             {
                 LevelManager.Instance.LoadNextLevel();

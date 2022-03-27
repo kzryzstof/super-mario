@@ -79,6 +79,9 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
 
         private void ScarePlayerIfNeeded(EnemyContext enemyContext)
         {
+            if (!Enemy.SupportsJumpScare)
+                return;
+            
             bool isPlayerClose = Math.Abs(Enemy.Position.x - Player.Position.x) < 2f;
 
             if (isPlayerClose && ShouldJump())

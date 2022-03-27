@@ -40,12 +40,14 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         public SpriteRenderer spriteRenderer;
         public float minDistanceToAttack;
         public float moveSpeed;
-
+        public bool supportsJumpScare;
+        
         //  Properties.
         public float MoveSpeed => moveSpeed;
         public float MinimumDistanceToAttack => minDistanceToAttack;
         public Vector2 Position => transform.position;
-
+        public bool SupportsJumpScare => supportsJumpScare;
+        
         //  Debug
         public float debugGravity;
         

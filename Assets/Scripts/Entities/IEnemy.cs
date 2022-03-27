@@ -17,6 +17,8 @@ namespace NoSuchCompany.Games.SuperMario.Entities
         float MinimumDistanceToAttack { get; }
 
         Vector2 Position { get; }
+        
+        bool SupportsJumpScare { get; }
 
         EnemySurroundings GetSurroundings();
         
