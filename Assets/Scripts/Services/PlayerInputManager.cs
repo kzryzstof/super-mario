@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 
 namespace NoSuchCompany.Games.SuperMario.Services
 {
-    internal sealed class InputManager : IInputManager
+    internal sealed class PlayerInputManager : IInputManager
     {
         public bool IsLeftPressed => Gamepad.current.dpad.left.isPressed;
         

@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 
@@ -40,54 +39,50 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
                     GoToIdle(enemyContext);
                     return;
                 }
-                
+
                 GoToReach(enemyContext);
                 return;
             }
 
             float horizontalMovement = enemyContext.Surroundings.MoveTowardPlayer(Enemy.MoveSpeed);
 
-            JumpOverObstacleIfNeeded(horizontalMovement);
+            JumpOverObstacleIfNeeded(enemyContext, horizontalMovement);
 
-            ScarePlayerIfNeeded();
-            
+            ScarePlayerIfNeeded(enemyContext);
+
             if (_isStagnating)
             {
                 GoToIdle(enemyContext);
                 return;
             }
             
-            AttackPlayer(horizontalMovement);
+            AttackPlayer(enemyContext, horizontalMovement);
         }
 
-        private void AttackPlayer(float horizontalMovement)
+        private void AttackPlayer(EnemyContext enemyContext, float horizontalMovement)
         {
-            Enemy.Move(horizontalMovement);
+            enemyContext.Controller.Move(horizontalMovement);
 
-            AppLogger.Write(LogsLevels.EnemyState, $"{Player.Position.y} {Player.Position.y} Enemy is heading over to the Player. Movement: {horizontalMovement}. Position ({Enemy.Position.x}, {Enemy.Position.y})");
             TrackNewPosition(Enemy.Position.x, horizontalMovement);
         }
 
-        private void JumpOverObstacleIfNeeded(float horizontalMovement)
+        private void JumpOverObstacleIfNeeded(EnemyContext enemyContext, float horizontalMovement)
         {
             bool isEnemyBlocked = Enemy.IsBlocked(horizontalMovement);
 
             if (isEnemyBlocked)
             {
-                AppLogger.Write(LogsLevels.EnemyState, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");
-                Enemy.Jump();
+                AppLogger.Write(LogsLevels.EnemyAi, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");
+                enemyContext.Controller.Jump();
             }
         }
 
-        private void ScarePlayerIfNeeded()
+        private void ScarePlayerIfNeeded(EnemyContext enemyContext)
         {
             bool isPlayerClose = Math.Abs(Enemy.Position.x - Player.Position.x) < 2f;
 
             if (isPlayerClose && ShouldJump())
-            {
-                AppLogger.Write(LogsLevels.EnemyState, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is close to the player: Let's jump to scare");
-                Enemy.Jump();
-            }
+                enemyContext.Controller.Jump();
         }
 
         private void TrackNewPosition(float latestPosition, float latestMovement)
@@ -102,19 +97,19 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
 
         private void UpdateIsStagnating(float latestPosition)
         {
-            if (_previousPositions.Count < 2)
-            {
+            //if (_previousPositions.Count < 2)
+            //{
                 _isStagnating = false;
-                return;
-            }
-
-            float maxValue = _previousPositions
-                .Select(position => latestPosition - position)
-                .Max();
-
-            _isStagnating = maxValue < 0.5f;
-
-            AppLogger.Write(LogsLevels.EnemyState, $"Is stagnating? {_isStagnating} ({maxValue})");
+            //     return;
+            // }
+            //
+            // float maxValue = _previousPositions
+            //     .Select(position => latestPosition - position)
+            //     .Max();
+            //
+            // _isStagnating = maxValue < 0.5f;
+            //
+            // AppLogger.Write(LogsLevels.EnemyAi, $"Is stagnating? {_isStagnating} ({maxValue})");
         }
 
         private bool ShouldJump()

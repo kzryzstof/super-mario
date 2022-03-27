@@ -6,6 +6,7 @@
 // Last change: 19/03/2022 @ 12:53
 // ==========================================================================
 
+using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 
 namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
@@ -14,6 +15,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
     {
         public EnemyIdleState(IEnemy enemy, IPlayer player) : base(enemy, player)
         {
+            AppLogger.Write(LogsLevels.EnemyAi, $"*** Enemy is Idle");
         }
 
         public override void Do(EnemyContext enemyContext)
@@ -22,7 +24,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
 
             if (mustAttack == false)
             {
-                Enemy.StandStill();
+                enemyContext.Controller.StandStill();
                 return;
             }
 

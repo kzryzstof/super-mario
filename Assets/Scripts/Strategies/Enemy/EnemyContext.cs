@@ -7,7 +7,9 @@
 // ==========================================================================
 
 using System;
+using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
+using NoSuchCompany.Games.SuperMario.Services;
 using NoSuchCompany.Games.SuperMario.Strategies.Enemy.States;
 
 namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy
@@ -30,16 +32,20 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy
         
         public EnemySurroundings Surroundings { get; }
 
+        public IEnemyController Controller { get; }
+        
         public bool IsAttacking => CurrentState.GetType() != typeof(EnemyIdleState);
         
-        public EnemyContext(IEnemy enemy, IPlayer player)
+        public EnemyContext(IEnemy enemy, IPlayer player, IEnemyController controller)
         {
             Surroundings = enemy.GetSurroundings();
             CurrentState = new EnemyIdleState(enemy, player);
+            Controller = controller;
         }
 
-        public void Do()
+        public void Think()
         {
+            AppLogger.Write(LogsLevels.EnemyAi, $"{CurrentState.GetType().Name}");
             CurrentState.Do(this);    
         }
     }

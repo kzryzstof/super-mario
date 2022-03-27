@@ -28,10 +28,11 @@ namespace NoSuchCompany.Games.SuperMario
 
         public static readonly LogsLevels LogsLevels =
                 LogsLevels.None
-                //LogsLevels.EnemyState
+                //LogsLevels.EnemyState |
                 //LogsLevels.PlayerControls
                 //LogsLevels.MovingPlatforms
                 //LogsLevels.PlayerRaycasting
+                //LogsLevels.EnemyAi
             ;
 
         #endregion

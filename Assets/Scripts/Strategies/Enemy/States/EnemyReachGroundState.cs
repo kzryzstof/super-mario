@@ -16,6 +16,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
     {
         public EnemyReachGroundState(IEnemy enemy, IPlayer player) : base(enemy, player)
         {
+            AppLogger.Write(LogsLevels.EnemyAi, $"*** Enemy is on a different level than the player's: trying to reach ground.");
         }
 
         public override void Do(EnemyContext enemyContext)
@@ -47,11 +48,12 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
 
             if (isBlocked)
             {
-                AppLogger.Write(LogsLevels.EnemyState, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");
-                Enemy.Jump();
+                AppLogger.Write(LogsLevels.EnemyAi, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");
+                
+                enemyContext.Controller.Jump();
             }
 
-            Enemy.Move(horizontalMovement);
+            enemyContext.Controller.Move(horizontalMovement);
         }
     }
 }

@@ -3,17 +3,17 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 24/03/2022 @ 20:13
+// Last change: 26/03/2022 @ 19:16
 // ==========================================================================
-
-using UnityEngine;
 
 namespace NoSuchCompany.Games.SuperMario.Services
 {
-    public interface IInputManager
+    public interface IEnemyController
     {
-        bool IsJumpPressed { get; }
+        void StandStill();
         
-        Vector2 Direction { get; }
+        void Jump();
+
+        void Move(float direction);
     }
 }

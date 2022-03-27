@@ -37,13 +37,13 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         {
             var boxCollider2D = GetComponent<BoxCollider2D>();
             
-            _raycaster.Initialize(boxCollider2D, 4);
+            _raycaster.Initialize(boxCollider2D, 6);
         }
 
         public void Move(Vector3 objectVelocity)
         {
             _raycaster.ApplyCollisions(ref objectVelocity, collisionMask);
-
+            
             transform.Translate(objectVelocity);
         }
     }

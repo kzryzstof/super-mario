@@ -6,6 +6,9 @@
 // Last change: 16/03/2022 @ 22:05
 // ==========================================================================
 
+using NoSuchCompany.Games.SuperMario.Constants;
+using UnityEngine;
+
 namespace NoSuchCompany.Games.SuperMario.Extensions
 {
     #region Class

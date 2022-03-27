@@ -14,16 +14,12 @@ namespace NoSuchCompany.Games.SuperMario.Entities
     {
         float MoveSpeed { get; }
         
+        float MinimumDistanceToAttack { get; }
+
         Vector2 Position { get; }
 
         EnemySurroundings GetSurroundings();
         
-        void StandStill();
-
-        void Jump();
-
-        void Move(float horizontalMovement);
-
         bool IsBlocked(float horizontalMovement);
     }
 }

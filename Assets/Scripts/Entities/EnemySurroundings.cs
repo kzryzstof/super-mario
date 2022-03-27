@@ -19,17 +19,16 @@ namespace NoSuchCompany.Games.SuperMario.Entities
     {
         #region Constants
 
-        private readonly GoombasBehavior _goombasBehavior;
-
+        private readonly IEnemy _enemy;
         private readonly IPlayer _player;
 
         #endregion
 
         #region Constructors
 
-        private EnemySurroundings(GoombasBehavior goombasBehavior, IPlayer player)
+        private EnemySurroundings(IEnemy enemy, IPlayer player)
         {
-            _goombasBehavior = goombasBehavior;
+            _enemy = enemy;
             _player = player;
         }
 
@@ -37,16 +36,16 @@ namespace NoSuchCompany.Games.SuperMario.Entities
 
         #region Public Methods
 
-        public static EnemySurroundings Get(GoombasBehavior goombasBehavior)
+        public static EnemySurroundings Get(IEnemy enemy)
         {
             var player = Object.FindObjectOfType<PlayerBehavior>();
 
-            return new EnemySurroundings(goombasBehavior, player);
+            return new EnemySurroundings(enemy, player);
         }
 
         public bool IsAtSameLevel()
         {
-            return Math.Abs(_goombasBehavior.transform.position.y - _player.Position.y) < 1f;
+            return Math.Abs(_enemy.Position.y - _player.Position.y) < 1f;
         }
 
         public float MoveTowardPlayer(float moveSpeed)
@@ -65,15 +64,15 @@ namespace NoSuchCompany.Games.SuperMario.Entities
 
             Vector2 distanceFromPlayer = GetDistanceFromPlayer();
 
-            return distanceFromPlayer.magnitude < _goombasBehavior.minDistanceToAttack;
+            return distanceFromPlayer.magnitude < _enemy.MinimumDistanceToAttack;
         }
 
         public bool MustJump()
         {
             Vector2 playerPosition = _player.Position;
-            Vector2 goombasPosition = _goombasBehavior.transform.position;
+            Vector2 enemyPosition = _enemy.Position;
 
-            return playerPosition.y > goombasPosition.y + 1f;
+            return playerPosition.y > enemyPosition.y + 1f;
         }
 
         #endregion
@@ -83,9 +82,9 @@ namespace NoSuchCompany.Games.SuperMario.Entities
         private Vector2 GetDistanceFromPlayer()
         {
             Vector2 playerPosition = _player.Position;
-            Vector2 goombasPosition = _goombasBehavior.transform.position;
+            Vector2 enemyPosition = _enemy.Position;
 
-            return playerPosition - goombasPosition;
+            return playerPosition - enemyPosition;
         }
 
         #endregion

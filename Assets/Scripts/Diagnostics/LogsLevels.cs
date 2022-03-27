@@ -24,6 +24,8 @@ namespace NoSuchCompany.Games.SuperMario.Diagnostics
         MovingPlatforms = 4,
         
         PlayerRaycasting = 8,
+        
+        EnemyAi = 16,
     }
 
     #endregion
