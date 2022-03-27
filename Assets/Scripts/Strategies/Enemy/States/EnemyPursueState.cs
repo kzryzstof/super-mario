@@ -69,7 +69,7 @@ namespace NoSuchCompany.Games.SuperMario.Strategies.Enemy.States
         private void JumpOverObstacleIfNeeded(EnemyContext enemyContext, float horizontalMovement)
         {
             bool isEnemyBlocked = Enemy.IsBlocked(horizontalMovement);
-
+            
             if (isEnemyBlocked)
             {
                 AppLogger.Write(LogsLevels.EnemyAi, $"{Enemy.Position.y} {Enemy.Position.y} Enemy is blocked: jumping over a potential obstacle.");

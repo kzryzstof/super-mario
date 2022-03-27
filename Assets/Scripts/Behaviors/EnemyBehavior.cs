@@ -77,8 +77,10 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             if (_isDead)
                 return;
             
+            //  Finds out what to do and updates the input manager.
             _enemyContext.Think();
 
+            //  Determines the velocity based on the requested inputs.
             if (_characterBehavior.Collisions.Above || _characterBehavior.Collisions.Below)
                 _velocity.y = Movements.None;
 
@@ -89,11 +91,12 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
                 TriggerJump();
 
             UpdateHorizontalVelocity();
-
             UpdateVerticalVelocity();
             
+            //  Adjusts the velocity based on the collisions and move the character.
             Move();
 
+            //  Reflects the motion in the animation.
             ProcessAnimations();
         }
 
@@ -104,7 +107,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
         public bool IsBlocked(float horizontalMovement)
         {
-            return Mathf.Abs(horizontalMovement) switch
+            return Mathf.Sign(horizontalMovement) switch
             {
                 Directions.Left => _characterBehavior.Collisions.Left,
                 Directions.Right => _characterBehavior.Collisions.Right,
@@ -151,7 +154,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
         private bool IsAttacked()
         {
-            IEnumerable<IRaycastCollision> raycastHits = _characterBehavior.FindVerticalHits(ref _velocity);
+            IEnumerable<IRaycastCollision> raycastHits = _characterBehavior.FindVerticalHits(ref _velocity, LayerMask.GetMask(Layers.Player), 0.05f);
             return raycastHits.Any(rayCastHit => rayCastHit.Transform.gameObject.CompareTag(Tags.Player));
         }
         

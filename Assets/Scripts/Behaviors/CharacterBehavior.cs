@@ -52,9 +52,9 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             transform.Translate(objectVelocity);
         }
 
-        public IEnumerable<IRaycastCollision> FindVerticalHits(ref Vector3 characterVelocity)
+        public IEnumerable<IRaycastCollision> FindVerticalHits(ref Vector3 characterVelocity, LayerMask otherCollisionMask, float rayLength)
         {
-            return _raycaster.FindVerticalHitsOnly(characterVelocity, collisionMask).ToList();
+            return _raycaster.FindVerticalHitsOnly(characterVelocity, otherCollisionMask, rayLength).ToList();
         }
 
         public void Kill()

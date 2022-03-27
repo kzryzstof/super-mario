@@ -26,6 +26,8 @@ namespace NoSuchCompany.Games.SuperMario.Diagnostics
         PlayerRaycasting = 8,
         
         EnemyAi = 16,
+        
+        RaycastingCollisions = 32
     }
 
     #endregion

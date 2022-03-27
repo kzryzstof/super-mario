@@ -19,7 +19,6 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
         //  Private fields.
         private readonly Collisions _collisions;
         private readonly List<string> _debugRaycasts;
-        private readonly float? _fixedRayLength = null;
         private const float SkinWidth = 0.015f;
         private int _horizontalRayCount;
         private int _verticalRayCount;
@@ -31,12 +30,11 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
         
         public ICollisions Collisions => _collisions;
 
-        public Raycaster(float? fixedRayLength = null)
+        public Raycaster()
         {
             _collisions = new Collisions();
             _raycastOrigins = new RaycastOrigins();
             _debugRaycasts = new List<string>();
-            _fixedRayLength = fixedRayLength;
         }
 
         public void Initialize(BoxCollider2D boxCollider2D, int rayCounts = DefaultRayCount)
@@ -48,7 +46,7 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
             CalculateRaySpacing();
         }
         
-        public IEnumerable<IRaycastCollision> FindVerticalHitsOnly(Vector2 objectVelocity, LayerMask collisionMask)
+        public IEnumerable<IRaycastCollision> FindVerticalHitsOnly(Vector2 objectVelocity, LayerMask collisionMask, float? fixedRayLength = null)
         {
             UpdateRaycastOrigins();
 
@@ -58,7 +56,7 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
             var raycastHits = new HashSet<IRaycastCollision>();
             
             float verticalDirection = Mathf.Sign(objectVelocity.y);
-            float rayLength = _fixedRayLength ?? Mathf.Abs(objectVelocity.y) + SkinWidth;
+            float rayLength = fixedRayLength ?? Mathf.Abs(objectVelocity.y) + SkinWidth;
 
             for (var verticalRayId = 0; verticalRayId < _verticalRayCount; verticalRayId++)
             {
@@ -69,7 +67,7 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
                 //  Draw a ray to see if the player hits something along the way.
                 RaycastHit2D isCollision = Physics2D.Raycast(rayOrigin, Vector2.up * verticalDirection, rayLength, collisionMask);
 
-                Debug.DrawRay(rayOrigin, Vector2.up * verticalDirection * (_fixedRayLength ?? rayLength), isCollision ? Color.red : Color.green);
+                Debug.DrawRay(rayOrigin, Vector2.up * verticalDirection * (fixedRayLength ?? rayLength), isCollision ? Color.red : Color.green);
 
                 if (!isCollision)
                     continue;
@@ -86,7 +84,7 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
             
             return raycastHits;
         }
-
+        
         public void ApplyCollisions(ref Vector3 objectVelocity, LayerMask collisionMask)
         {
             UpdateRaycastOrigins();
@@ -101,6 +99,9 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
             ProcessVerticalCollisions(ref objectVelocity, collisionMask);
             
             _boxCollider2D.enabled = true;
+
+            if (_collisions.IsCollidingExceptBelow)
+                AppLogger.Write(LogsLevels.RaycastingCollisions, $"{_boxCollider2D.gameObject.name} - [{_collisions.Left}, {_collisions.Above}, {_collisions.Right}, {_collisions.Below}]");
         }
         
         private void CalculateRaySpacing()

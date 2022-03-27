@@ -8296,11 +8296,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1019328964623908236, guid: d8d570859fbf44097928617c37608b22, type: 3}
       propertyPath: m_Name
-      value: Goombas (1)
+      value: Goomba - First
       objectReference: {fileID: 0}
     - target: {fileID: 2433876245563284868, guid: d8d570859fbf44097928617c37608b22, type: 3}
       propertyPath: collisionMask.m_Bits
-      value: 896
+      value: 768
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8d570859fbf44097928617c37608b22, type: 3}

@@ -39,7 +39,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         public PlatformBehavior()
         {
             _id = Guid.NewGuid();
-            _raycaster = new Raycaster(DefaultRayLength);
+            _raycaster = new Raycaster();
         }
         
         public void Start()
@@ -69,7 +69,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             //if (platformVelocity.x == Movements.None && platformVelocity.y == Movements.None)
            //     return;
             
-            List<IRaycastCollision> raycastHits = _raycaster.FindVerticalHitsOnly(platformVelocity, characterMask).ToList();
+            List<IRaycastCollision> raycastHits = _raycaster.FindVerticalHitsOnly(platformVelocity, characterMask, DefaultRayLength).ToList();
 
             float platformDirectionX = Mathf.Sign(platformVelocity.x);
             float platformDirectionY = Mathf.Sign(platformVelocity.y);

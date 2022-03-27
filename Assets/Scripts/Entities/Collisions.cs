@@ -20,6 +20,8 @@ namespace NoSuchCompany.Games.SuperMario.Entities
         
         public bool Right { get; set; }
 
+        public bool IsCollidingExceptBelow => Left || Above || Right;
+
         public void ResetAll()
         {
             Above = Below = false;
@@ -35,7 +37,7 @@ namespace NoSuchCompany.Games.SuperMario.Entities
         public void SetVerticalCollisions(float direction)
         {
             Above = direction == Directions.Upward;
-            Below = true;
+            Below = direction == Directions.Downward;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace NoSuchCompany.Games.SuperMario.Constants
 {
     internal static class Layers
     {
-        public const string Deads = "Deads";
+        public const string Deads = nameof(Deads);
+        
+        public const string Player = nameof(Player);
     }
 }

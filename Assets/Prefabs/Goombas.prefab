@@ -124,6 +124,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1019328964623908238}
   minDistanceToAttack: 10
   moveSpeed: 2
+  supportsJumpScare: 0
   debugGravity: -56.249996
 --- !u!61 &5998071269737091946
 BoxCollider2D:
@@ -165,4 +166,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 896
+    m_Bits: 768

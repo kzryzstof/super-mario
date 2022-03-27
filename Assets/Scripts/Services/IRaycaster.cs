@@ -18,7 +18,7 @@ namespace NoSuchCompany.Games.SuperMario.Services
 
         void Initialize(BoxCollider2D boxCollider2D, int rayCounts);
 
-        IEnumerable<IRaycastCollision> FindVerticalHitsOnly(Vector2 objectVelocity, LayerMask collisionMask);
+        IEnumerable<IRaycastCollision> FindVerticalHitsOnly(Vector2 objectVelocity, LayerMask collisionMask, float? fixedRayLength = null);
 
         void ApplyCollisions(ref Vector3 objectVelocity, LayerMask collisionMask);
     }
