@@ -32,6 +32,10 @@ To throw the player off a bit, Goombas can do jump scares if the player is reall
 
 ![Goombas basic attack](Documentation/Enemy_JumpScare.gif)
 
+Goombas have the ability to jump over an obstacle if it prevents them from pursuing the player. 
+
+![Goombas avoids obstacle](Documentation/Enemy_JumpOverObstacle.gif)
+
 
 ## Platforms
 
