@@ -25,7 +25,6 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         private readonly float _minimumJumpVelocity;
         private const float MaximumJumpHeight = 4.5f;
         private const float MinimumJumpHeight = 1f;
-        
         private const float TimeToJumpApex = 0.4f;
         private const float MoveSpeed = 10f;
         private const float AccelerationTimeAirborne = 0.2f;
@@ -83,12 +82,9 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
                     _velocity.y = _minimumJumpVelocity;
             }
 
-            float targetVelocityX = movementDirection.x * MoveSpeed;
-            _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
-            
-            _velocity.y += _gravity * Time.deltaTime;
-            
-            _characterBehavior.Move(_velocity * Time.deltaTime);
+            UpdateVelocity(movementDirection);
+
+            MovePlayer();
 
             ProcessAnimations();
         }
@@ -98,6 +94,19 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             _isEnemyAttacked = true;
         }
         
+        private void MovePlayer()
+        {
+            _characterBehavior.Move(_velocity * Time.deltaTime);
+        }
+
+        private void UpdateVelocity(Vector2 movementDirection)
+        {
+            float targetVelocityX = movementDirection.x * MoveSpeed;
+            _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
+
+            _velocity.y += _gravity * Time.deltaTime;
+        }
+
         private bool InitiateJump()
         {
             return (CanJump() && IsJumpPressed()) || _isEnemyAttacked;
