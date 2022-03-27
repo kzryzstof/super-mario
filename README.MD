@@ -2,6 +2,14 @@ The repository contains a version of Super Mario made in Unity.
 
 The goal of this repository is for me to learn Unity while tweaking the first video game I ever played.
 
+A lot of the algorithms are coming from the following tutorials:
+
+[Sebastian Lague's Creating a 2D platformer series (EN)](https://www.youtube.com/watch?v=MbWK8bCAU2w&list=PLFt_AvWsXl0f0hqURlhyIoAabKPgRsqjz&index=1)
+
+[TUTO UNITY FR's Créer un jeu en 2D facilement avec Unity series (FR)](https://www.youtube.com/watch?v=Y3-iYIs16TI&list=PLUWxWDlz8PYKnrd27LTqOxL2lr3KhEVRT)
+
+
+
 ## Enemies
 
 I was curious to know how the game would feel if the enemies were a bit more smarter and actually would try to *get* you.
