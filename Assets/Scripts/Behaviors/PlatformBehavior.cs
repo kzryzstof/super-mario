@@ -13,6 +13,7 @@ using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Services;
+using NoSuchCompany.Games.SuperMario.Services.Impl;
 using UnityEngine;
 
 namespace NoSuchCompany.Games.SuperMario.Behaviors

@@ -6,7 +6,7 @@
 // Last change: 27/03/2022 @ 14:25
 // ==========================================================================
 
-namespace NoSuchCompany.Games.SuperMario.Entities
+namespace NoSuchCompany.Games.SuperMario.Constants
 {
     internal static class Layers
     {

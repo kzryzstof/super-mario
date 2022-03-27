@@ -10,7 +10,7 @@ using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Diagnostics;
 using UnityEngine;
 
-namespace NoSuchCompany.Games.SuperMario.Services
+namespace NoSuchCompany.Games.SuperMario.Services.Impl
 {
     internal sealed class EnemyInputManager : IInputManager, IEnemyController
     {

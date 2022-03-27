@@ -11,6 +11,7 @@ using System.Linq;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Services;
+using NoSuchCompany.Games.SuperMario.Services.Impl;
 using NoSuchCompany.Games.SuperMario.Strategies.Enemy;
 using UnityEngine;
 

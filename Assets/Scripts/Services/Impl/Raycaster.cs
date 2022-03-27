@@ -6,14 +6,13 @@
 // Last change: 25/03/2022 @ 19:11
 // ==========================================================================
 
-using System;
 using System.Collections.Generic;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 using UnityEngine;
 
-namespace NoSuchCompany.Games.SuperMario.Services
+namespace NoSuchCompany.Games.SuperMario.Services.Impl
 {
     internal sealed class Raycaster : IRaycaster
     {

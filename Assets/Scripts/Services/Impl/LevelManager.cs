@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-namespace NoSuchCompany.Games.SuperMario.Services
+namespace NoSuchCompany.Games.SuperMario.Services.Impl
 {
     //  I need to find a way to inject this. Does unity has a DI?
     internal sealed class LevelManager : ILevelManager

@@ -8,7 +8,7 @@
 
 using UnityEngine;
 
-namespace NoSuchCompany.Games.SuperMario.Services
+namespace NoSuchCompany.Games.SuperMario.Services.Impl
 {
     internal sealed class RaycastCollision : IRaycastCollision
     {

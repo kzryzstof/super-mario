@@ -9,7 +9,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace NoSuchCompany.Games.SuperMario.Services
+namespace NoSuchCompany.Games.SuperMario.Services.Impl
 {
     internal sealed class PlayerInputManager : IInputManager
     {
