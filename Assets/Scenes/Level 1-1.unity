@@ -7818,6 +7818,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goombas
       objectReference: {fileID: 0}
+    - target: {fileID: 2433876245563284868, guid: d8d570859fbf44097928617c37608b22, type: 3}
+      propertyPath: collisionMask.m_Bits
+      value: 640
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8d570859fbf44097928617c37608b22, type: 3}
 --- !u!4 &789664724 stripped

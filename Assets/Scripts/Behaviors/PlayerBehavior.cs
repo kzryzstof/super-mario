@@ -6,9 +6,7 @@
 // Last change: 24/03/2022 @ 19:29
 // ==========================================================================
 
-using System;
 using NoSuchCompany.Games.SuperMario.Constants;
-using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Services;
 using UnityEngine;
@@ -22,8 +20,11 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
     {
         //  Constants
         private readonly float _gravity;
-        private readonly float _jumpVelocity;
-        private const float JumpHeight = 4.5f;
+        private readonly float _maximumJumpVelocity;
+        private readonly float _minimumJumpVelocity;
+        private const float MaximumJumpHeight = 4.5f;
+        private const float MinimumJumpHeight = 1f;
+        
         private const float TimeToJumpApex = 0.4f;
         private const float MoveSpeed = 10f;
         private const float AccelerationTimeAirborne = 0.2f;
@@ -50,23 +51,14 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         {
             _inputManager = new PlayerInputManager();
             
-            _gravity = debugGravity = -(2f * JumpHeight) / Mathf.Pow(TimeToJumpApex, 2f);
-            _jumpVelocity = Mathf.Abs(_gravity) * TimeToJumpApex;
+            _gravity = debugGravity = -(2f * MaximumJumpHeight) / Mathf.Pow(TimeToJumpApex, 2f);
+            _maximumJumpVelocity = Mathf.Abs(_gravity) * TimeToJumpApex;
+            _minimumJumpVelocity = Mathf.Sqrt(2f * Mathf.Abs(_gravity) * MinimumJumpHeight);
         }
         
         public void Start()
         {
             _characterBehavior = GetComponent<CharacterBehavior>();
-        }
-
-        private bool CanJump()
-        {
-            return _characterBehavior.Collisions.Below && !_characterBehavior.Collisions.Above;
-        }
-        
-        private bool IsJumpPressed()
-        {
-            return _inputManager.IsJumpPressed;
         }
 
         public void Update()
@@ -76,12 +68,18 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
             Vector2 movementDirection = _inputManager.Direction;
 
-            if (CanJump() && IsJumpPressed())
+            if (InitiateJump())
             {
                 _isJumping = true;
-                _velocity.y = _jumpVelocity;
+                _velocity.y = _maximumJumpVelocity;
             }
-            
+
+            if (AbortJump())
+            {
+                if (_velocity.y > _minimumJumpVelocity)
+                    _velocity.y = _minimumJumpVelocity;
+            }
+
             float targetVelocityX = movementDirection.x * MoveSpeed;
             _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
             
@@ -90,6 +88,26 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             _characterBehavior.Move(_velocity * Time.deltaTime);
 
             ProcessAnimations();
+        }
+
+        private bool InitiateJump()
+        {
+            return CanJump() && IsJumpPressed();
+        }
+        
+        private bool AbortJump()
+        {
+            return !CanJump() && !IsJumpPressed();
+        }
+        
+        private bool CanJump()
+        {
+            return _characterBehavior.Collisions.Below && !_characterBehavior.Collisions.Above;
+        }
+        
+        private bool IsJumpPressed()
+        {
+            return _inputManager.IsJumpPressed;
         }
 
         private void ProcessAnimations()
