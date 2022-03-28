@@ -6,8 +6,12 @@
 // Last change: 24/03/2022 @ 19:29
 // ==========================================================================
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Entities;
+using NoSuchCompany.Games.SuperMario.Extensions;
 using NoSuchCompany.Games.SuperMario.Services;
 using NoSuchCompany.Games.SuperMario.Services.Impl;
 using UnityEngine;
@@ -37,6 +41,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         private bool _isJumping;
         private bool _isEnemyAttacked;
         private float _smoothedVelocityX;
+        private bool _isDead;
         
         //  Unity properties;
         public Animator animator;
@@ -67,6 +72,9 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             if (_characterBehavior.Collisions.Above || _characterBehavior.Collisions.Below)
                 _velocity.y = Movements.None;
 
+            if (IsAttacked())
+                DieAsync().FireAndForget();
+
             Vector2 movementDirection = _inputManager.Direction;
 
             if (InitiateJump())
@@ -94,8 +102,22 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             _isEnemyAttacked = true;
         }
         
+        private async Task DieAsync()
+        {
+            _velocity = Vector3.zero;
+            _isDead = true;
+            _characterBehavior.Kill(false);
+            
+            await Task.Delay(TimeSpan.FromSeconds(2d)).ConfigureAwait(true);
+                
+            LevelManager.Instance.ReloadCurrentLevel();
+        }
+        
         private void MovePlayer()
         {
+            if (_isDead)
+                return;
+            
             _characterBehavior.Move(_velocity * Time.deltaTime);
         }
 
@@ -134,11 +156,12 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
                 if (_characterBehavior.Collisions.Below)
                     _isJumping = false;
                 
-                animator.SetBool("IsJumping", _isJumping);
+                animator.SetBool(Animations.IsJumping, _isJumping);
             }
-
+            
             Flip(_velocity.x);
-            animator.SetFloat("Speed", Mathf.Abs(_velocity.x));
+            animator.SetFloat(Animations.Speed, Mathf.Abs(_velocity.x));
+            animator.SetBool(Animations.IsDead, _isDead);
         }
 
         private void Flip(float characterVelocity)
@@ -147,6 +170,14 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
                 return;
             
             spriteRenderer.flipX = characterVelocity < -0.1f;
+        }
+        
+        private bool IsAttacked()
+        {
+            return
+                _characterBehavior.Collisions.LeftCollisions.Any(tag => string.Equals(tag, Tags.Enemy))
+                || _characterBehavior.Collisions.RightCollisions.Any(tag => string.Equals(tag, Tags.Enemy))
+                || _characterBehavior.Collisions.AboveCollisions.Any(tag => string.Equals(tag, Tags.Enemy));
         }
     }
 }

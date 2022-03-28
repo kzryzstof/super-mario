@@ -42,7 +42,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         {
             var boxCollider2D = GetComponent<BoxCollider2D>();
             
-            _raycaster.Initialize(boxCollider2D, 6);
+            _raycaster.Initialize(boxCollider2D, 3);
         }
 
         public void Move(Vector3 objectVelocity)
@@ -52,15 +52,12 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             transform.Translate(objectVelocity);
         }
 
-        public IEnumerable<IRaycastCollision> FindVerticalHits(ref Vector3 characterVelocity, LayerMask otherCollisionMask, float rayLength)
-        {
-            return _raycaster.FindVerticalHitsOnly(characterVelocity, otherCollisionMask, rayLength).ToList();
-        }
-
-        public void Kill()
+        public void Kill(bool destroyObject = true)
         {
             gameObject.layer = LayerMask.NameToLayer(Layers.Deads);
-            Destroy (gameObject, (int)TimeSpan.FromSeconds(2).TotalSeconds);
+
+            if (destroyObject)
+                Destroy(gameObject, (int)TimeSpan.FromSeconds(2).TotalSeconds);
         }
     }
 }

@@ -6,11 +6,9 @@
 // Last change: 24/03/2022 @ 19:29
 // ==========================================================================
 
-using System.Collections.Generic;
 using System.Linq;
 using NoSuchCompany.Games.SuperMario.Constants;
 using NoSuchCompany.Games.SuperMario.Entities;
-using NoSuchCompany.Games.SuperMario.Services;
 using NoSuchCompany.Games.SuperMario.Services.Impl;
 using NoSuchCompany.Games.SuperMario.Strategies.Enemy;
 using UnityEngine;
@@ -85,7 +83,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
                 _velocity.y = Movements.None;
 
             if (IsAttacked())
-                Kill();
+                Die();
 
             if (IsJumpRequested())
                 TriggerJump();
@@ -144,7 +142,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
             return CanJump() && IsJumpPressed();
         }
 
-        private void Kill()
+        private void Die()
         {
             _velocity.x = Movements.None;
             _isDead = true;
@@ -154,8 +152,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
         private bool IsAttacked()
         {
-            IEnumerable<IRaycastCollision> raycastHits = _characterBehavior.FindVerticalHits(ref _velocity, LayerMask.GetMask(Layers.Player), 0.05f);
-            return raycastHits.Any(rayCastHit => rayCastHit.Transform.gameObject.CompareTag(Tags.Player));
+            return _characterBehavior.Collisions.AboveCollisions.Any(tag => string.Equals(tag, Tags.Player));
         }
         
         private bool IsPlayerReady()

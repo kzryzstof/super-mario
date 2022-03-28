@@ -3,23 +3,18 @@
 // All rights reserved.
 // May be used only in accordance with a valid Source Code License Agreement.
 // 
-// Last change: 16/03/2022 @ 22:05
+// Last change: 27/03/2022 @ 20:51
 // ==========================================================================
 
-namespace NoSuchCompany.Games.SuperMario.Constants
+using System.Threading.Tasks;
+
+namespace NoSuchCompany.Games.SuperMario.Extensions
 {
-    #region Class
-
-    public static class Tags
+    internal static class TaskExtensions
     {
-        #region Constants
-
-        public const string Player = nameof(Player);
-
-        public const string Enemy = nameof(Enemy);
-        
-        #endregion
+        public static void FireAndForget(this Task task)
+        {
+            //  Nothing to do.
+        }
     }
-
-    #endregion
 }

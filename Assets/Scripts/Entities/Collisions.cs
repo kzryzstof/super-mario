@@ -6,38 +6,76 @@
 // Last change: 24/03/2022 @ 20:26
 // ==========================================================================
 
-using NoSuchCompany.Games.SuperMario.Constants;
+using System.Collections.Generic;
 
 namespace NoSuchCompany.Games.SuperMario.Entities
 {
     internal sealed class Collisions : ICollisions
     {
-        public bool Above { get; set; }
+        private readonly HashSet<string> _aboveCollisions;
+        private readonly HashSet<string> _belowCollisions;
+        private readonly HashSet<string> _leftCollisions;
+        private readonly HashSet<string> _rightCollisions;
+
+        public bool Above { get; private set; }
         
-        public bool Below { get; set; }
+        public bool Below { get; private set; }
         
-        public bool Left { get; set; }
+        public bool Left { get; private set; }
         
-        public bool Right { get; set; }
+        public bool Right { get; private set; }
 
         public bool IsCollidingExceptBelow => Left || Above || Right;
 
+        public IEnumerable<string> AboveCollisions => _aboveCollisions;
+
+        public IEnumerable<string> BelowCollisions => _belowCollisions;
+
+        public IEnumerable<string> LeftCollisions => _leftCollisions;
+
+        public IEnumerable<string> RightCollisions => _rightCollisions;
+        
+        public Collisions()
+        {
+            _aboveCollisions = new HashSet<string>();
+            _belowCollisions = new HashSet<string>();
+            _leftCollisions = new HashSet<string>();
+            _rightCollisions = new HashSet<string>();
+        }
+        
         public void ResetAll()
         {
             Above = Below = false;
             Left = Right = false;
+            
+            _aboveCollisions.Clear();
+            _belowCollisions.Clear();
+            _leftCollisions.Clear();
+            _rightCollisions.Clear();
         }
 
-        public void SetHorizontalCollisions(float direction)
+        public void SetTopCollisions(string tag)
         {
-            Left = direction == Directions.Left;
-            Right = direction == Directions.Right;
+            Above = true;
+            _aboveCollisions.Add(tag);
         }
         
-        public void SetVerticalCollisions(float direction)
+        public void SetBottomCollisions(string tag)
         {
-            Above = direction == Directions.Upward;
-            Below = direction == Directions.Downward;
+            Below = true;
+            _belowCollisions.Add(tag);
+        }
+
+        public void SetLeftCollisions(string tag)
+        {
+            Left = true;
+            _leftCollisions.Add(tag);
+        }
+
+        public void SetRightCollisions(string tag)
+        {
+            Right = true;
+            _rightCollisions.Add(tag);
         }
     }
 }
