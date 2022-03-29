@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using NoSuchCompany.Games.SuperMario.Constants;
+using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Extensions;
 using NoSuchCompany.Games.SuperMario.Services;
@@ -79,6 +80,8 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
             if (InitiateJump())
             {
+                AppLogger.Write(LogsLevels.None, $"****** Initiate Jump");
+                
                 _isJumping = true;
                 _isEnemyAttacked = false;
                 _velocity.y = _maximumJumpVelocity;
@@ -86,9 +89,13 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
             if (AbortJump())
             {
+                //AppLogger.Write(LogsLevels.None, $"!!!!!! Abort Jump");
+                
                 if (_velocity.y > _minimumJumpVelocity)
                     _velocity.y = _minimumJumpVelocity;
             }
+            
+            //AppLogger.Write(LogsLevels.None, $"{_velocity.y}");
 
             UpdateVelocity(movementDirection);
 
@@ -123,9 +130,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
         private void UpdateVelocity(Vector2 movementDirection)
         {
-            float targetVelocityX = movementDirection.x * MoveSpeed;
-            _velocity.x = Mathf.SmoothDamp(_velocity.x, targetVelocityX, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
-
+            _velocity.x = Mathf.SmoothDamp(_velocity.x, movementDirection.x * MoveSpeed, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
             _velocity.y += _gravity * Time.deltaTime;
         }
 
