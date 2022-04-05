@@ -8,6 +8,19 @@ A lot of the algorithms are coming from the following tutorials:
 
 [TUTO UNITY FR's Créer un jeu en 2D facilement avec Unity series (FR)](https://www.youtube.com/watch?v=Y3-iYIs16TI&list=PLUWxWDlz8PYKnrd27LTqOxL2lr3KhEVRT)
 
+## Player
+
+### Jump
+
+I used Sebastian's raycast approach to detect obstacles. 
+
+#### Cooldown
+
+When jumping, I realized there was a problem if Mario was hitting walls. Mario would get extra jump mid-air.
+
+I have implemented a basic cooldown system. As soon as the player jumps and gets off the ground, the [JumpCooldown](Assets/Scripts/Services/Jumps/JumpCooldown.cs) class activates the cooldown. As soon as the player 'hits' ground, it counts the number of frames during which the player is not allowed to jump.
+
+![Jump cooldown](Documentation/JumpCooldown.gif)
 
 
 ## Enemies
