@@ -15,5 +15,7 @@ namespace NoSuchCompany.Games.SuperMario.Constants
         public static string IsDead = nameof(IsDead);
         
         public static string Speed = nameof(Speed);
+        
+        public static string IsActive = nameof(IsActive);
     }
 }

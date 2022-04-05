@@ -91,7 +91,7 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
 
             _collisions.ResetAll();
             
-            //  Avoid collision with itself during the raycasting phase.
+            //  Avoid collision with itself during the raycast-ing phase.
             _boxCollider2D.enabled = false;
             
             ProcessHorizontalCollisions(ref objectVelocity, collisionMask);
@@ -99,9 +99,6 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
             ProcessVerticalCollisions(ref objectVelocity, collisionMask);
             
             _boxCollider2D.enabled = true;
-
-            if (_collisions.IsCollidingExceptBelow)
-                AppLogger.Write(LogsLevels.RaycastingCollisions, $"{_boxCollider2D.gameObject.name} - [{_collisions.Left}, {_collisions.Above}, {_collisions.Right}, {_collisions.Below}]");
         }
         
         private void CalculateRaySpacing()

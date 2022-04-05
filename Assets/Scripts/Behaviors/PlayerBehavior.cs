@@ -15,6 +15,7 @@ using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Extensions;
 using NoSuchCompany.Games.SuperMario.Services;
 using NoSuchCompany.Games.SuperMario.Services.Impl;
+using NoSuchCompany.Games.SuperMario.Services.Jumps;
 using UnityEngine;
 
 namespace NoSuchCompany.Games.SuperMario.Behaviors
@@ -25,6 +26,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
     public sealed class PlayerBehavior : MonoBehaviour, IPlayer
     {
         //  Constants
+        private readonly JumpCooldown _jumpCooldown;
         private readonly float _gravity;
         private readonly float _maximumJumpVelocity;
         private readonly float _minimumJumpVelocity;
@@ -57,6 +59,7 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         public PlayerBehavior()
         {
             _inputManager = new PlayerInputManager();
+            _jumpCooldown = new JumpCooldown();
             
             _gravity = debugGravity = -(2f * MaximumJumpHeight) / Mathf.Pow(TimeToJumpApex, 2f);
             _maximumJumpVelocity = Mathf.Abs(_gravity) * TimeToJumpApex;
@@ -67,11 +70,19 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         {
             _characterBehavior = GetComponent<CharacterBehavior>();
         }
-
+        
         public void Update()
         {
-            if (_characterBehavior.Collisions.Above || _characterBehavior.Collisions.Below)
+            _jumpCooldown.PreUpdate();
+
+            if (_characterBehavior.Collisions.Above)
+            {
                 _velocity.y = Movements.None;
+            }
+            else if (_characterBehavior.Collisions.Below)
+            {
+                _velocity.y = Mathf.Sign(_velocity.y) == Directions.Downward ? Movements.None : _velocity.y;
+            }
 
             if (IsAttacked())
                 DieAsync().FireAndForget();
@@ -80,8 +91,6 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
             if (InitiateJump())
             {
-                AppLogger.Write(LogsLevels.None, $"****** Initiate Jump");
-                
                 _isJumping = true;
                 _isEnemyAttacked = false;
                 _velocity.y = _maximumJumpVelocity;
@@ -89,13 +98,9 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
             if (AbortJump())
             {
-                //AppLogger.Write(LogsLevels.None, $"!!!!!! Abort Jump");
-                
                 if (_velocity.y > _minimumJumpVelocity)
                     _velocity.y = _minimumJumpVelocity;
             }
-            
-            //AppLogger.Write(LogsLevels.None, $"{_velocity.y}");
 
             UpdateVelocity(movementDirection);
 
@@ -111,6 +116,9 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         
         private async Task DieAsync()
         {
+            if (_isDead)
+                return;
+            
             _velocity = Vector3.zero;
             _isDead = true;
             _characterBehavior.Kill(false);
@@ -136,7 +144,16 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
 
         private bool InitiateJump()
         {
-            return (CanJump() && IsJumpPressed()) || _isEnemyAttacked;
+            bool canJump = CanJump();
+            bool isJumpPressed = IsJumpPressed();
+            bool isEnemyAttacked = _isEnemyAttacked;
+            
+            bool result = (canJump && isJumpPressed && !_jumpCooldown.IsActivated) || isEnemyAttacked;
+
+            if (result)
+                AppLogger.Write(LogsLevels.None, $"canJump = {canJump} | isJumpPressed = {isJumpPressed} | isEnemyAttacked = {isEnemyAttacked} | jumpCooldown = {_jumpCooldown.IsActivated}");
+
+            return result;
         }
         
         private bool AbortJump()
@@ -158,9 +175,11 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         {
             if (_isJumping)
             {
+                _jumpCooldown.PostUpdate(_characterBehavior.Collisions);
+                
                 if (_characterBehavior.Collisions.Below)
                     _isJumping = false;
-                
+
                 animator.SetBool(Animations.IsJumping, _isJumping);
             }
             
