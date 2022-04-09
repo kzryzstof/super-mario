@@ -28,6 +28,7 @@ namespace NoSuchCompany.Games.SuperMario
 
         public static readonly LogsLevels LogsLevels =
                 LogsLevels.None
+                //LogsLevels.JumpController
                 //LogsLevels.EnemyState
                 //LogsLevels.PlayerControls
                 //LogsLevels.MovingPlatforms

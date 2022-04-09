@@ -9,7 +9,7 @@
 using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 
-namespace NoSuchCompany.Games.SuperMario.Services.Jumps
+namespace NoSuchCompany.Games.SuperMario.Services.Jumping
 {
     /// <remarks>
     /// A cool down is useful to make sure we do not 

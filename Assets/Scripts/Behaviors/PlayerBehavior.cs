@@ -10,12 +10,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using NoSuchCompany.Games.SuperMario.Constants;
-using NoSuchCompany.Games.SuperMario.Diagnostics;
 using NoSuchCompany.Games.SuperMario.Entities;
 using NoSuchCompany.Games.SuperMario.Extensions;
 using NoSuchCompany.Games.SuperMario.Services;
 using NoSuchCompany.Games.SuperMario.Services.Impl;
-using NoSuchCompany.Games.SuperMario.Services.Jumps;
+using NoSuchCompany.Games.SuperMario.Services.Jumping;
 using UnityEngine;
 
 namespace NoSuchCompany.Games.SuperMario.Behaviors
@@ -26,14 +25,8 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
     public sealed class PlayerBehavior : MonoBehaviour, IPlayer
     {
         //  Constants
-        private readonly JumpCooldown _jumpCooldown;
-        private readonly float _gravity;
-        private readonly float _maximumJumpVelocity;
-        private readonly float _minimumJumpVelocity;
-        private const float MaximumJumpHeight = 4.5f;
-        private const float MinimumJumpHeight = 1f;
-        private const float TimeToJumpApex = 0.4f;
-        private const float MoveSpeed = 10f;
+        private readonly JumpController _jumpController;
+        private const float MoveSpeed = 5f;
         private const float AccelerationTimeAirborne = 0.2f;
         private const float AccelerationTimeGrounded = 0.1f;
 
@@ -41,8 +34,6 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         private readonly IInputManager _inputManager;
         private CharacterBehavior _characterBehavior;
         private Vector3 _velocity;
-        private bool _isJumping;
-        private bool _isEnemyAttacked;
         private float _smoothedVelocityX;
         private bool _isDead;
         
@@ -53,65 +44,35 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         //  Properties
         public Vector2 Position => transform.position;
 
-        //  Debug
-        public float debugGravity;
-        
         public PlayerBehavior()
         {
             _inputManager = new PlayerInputManager();
-            _jumpCooldown = new JumpCooldown();
-            
-            _gravity = debugGravity = -(2f * MaximumJumpHeight) / Mathf.Pow(TimeToJumpApex, 2f);
-            _maximumJumpVelocity = Mathf.Abs(_gravity) * TimeToJumpApex;
-            _minimumJumpVelocity = Mathf.Sqrt(2f * Mathf.Abs(_gravity) * MinimumJumpHeight);
+            _jumpController = new JumpController(_inputManager);
         }
         
         public void Start()
         {
             _characterBehavior = GetComponent<CharacterBehavior>();
+            _jumpController.Initialize(_characterBehavior);
         }
         
         public void Update()
         {
-            _jumpCooldown.PreUpdate();
-
-            if (_characterBehavior.Collisions.Above)
-            {
-                _velocity.y = Movements.None;
-            }
-            else if (_characterBehavior.Collisions.Below)
-            {
-                _velocity.y = Mathf.Sign(_velocity.y) == Directions.Downward ? Movements.None : _velocity.y;
-            }
-
+            _jumpController.Update(ref _velocity);
+            
             if (IsAttacked())
                 DieAsync().FireAndForget();
 
-            Vector2 movementDirection = _inputManager.Direction;
-
-            if (InitiateJump())
-            {
-                _isJumping = true;
-                _isEnemyAttacked = false;
-                _velocity.y = _maximumJumpVelocity;
-            }
-
-            if (AbortJump())
-            {
-                if (_velocity.y > _minimumJumpVelocity)
-                    _velocity.y = _minimumJumpVelocity;
-            }
-
-            UpdateVelocity(movementDirection);
-
             MovePlayer();
+            
+            _jumpController.PostUpdate();
 
-            ProcessAnimations();
+            UpdateAnimations();
         }
 
         public void OnEnemyAttacked()
         {
-            _isEnemyAttacked = true;
+            _jumpController.OnEnemyAttacked();
         }
         
         private async Task DieAsync()
@@ -132,59 +93,18 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
         {
             if (_isDead)
                 return;
-            
+                    
+            Vector2 movementDirection = _inputManager.Direction;
+            _velocity.x = Mathf.SmoothDamp(_velocity.x, movementDirection.x * MoveSpeed, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
+
             _characterBehavior.Move(_velocity * Time.deltaTime);
         }
 
-        private void UpdateVelocity(Vector2 movementDirection)
+        private void UpdateAnimations()
         {
-            _velocity.x = Mathf.SmoothDamp(_velocity.x, movementDirection.x * MoveSpeed, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
-            _velocity.y += _gravity * Time.deltaTime;
-        }
-
-        private bool InitiateJump()
-        {
-            bool canJump = CanJump();
-            bool isJumpPressed = IsJumpPressed();
-            bool isEnemyAttacked = _isEnemyAttacked;
-            
-            bool result = (canJump && isJumpPressed && !_jumpCooldown.IsActivated) || isEnemyAttacked;
-
-            if (result)
-                AppLogger.Write(LogsLevels.None, $"canJump = {canJump} | isJumpPressed = {isJumpPressed} | isEnemyAttacked = {isEnemyAttacked} | jumpCooldown = {_jumpCooldown.IsActivated}");
-
-            return result;
-        }
-        
-        private bool AbortJump()
-        {
-            return !CanJump() && !IsJumpPressed();
-        }
-        
-        private bool CanJump()
-        {
-            return _characterBehavior.Collisions.Below && !_characterBehavior.Collisions.Above;
-        }
-        
-        private bool IsJumpPressed()
-        {
-            return _inputManager.IsJumpPressed;
-        }
-
-        private void ProcessAnimations()
-        {
-            if (_isJumping)
-            {
-                _jumpCooldown.PostUpdate(_characterBehavior.Collisions);
-                
-                if (_characterBehavior.Collisions.Below)
-                    _isJumping = false;
-
-                animator.SetBool(Animations.IsJumping, _isJumping);
-            }
-            
             Flip(_velocity.x);
             animator.SetFloat(Animations.Speed, Mathf.Abs(_velocity.x));
+            animator.SetBool(Animations.IsJumping, _jumpController.IsJumping);
             animator.SetBool(Animations.IsDead, _isDead);
         }
 

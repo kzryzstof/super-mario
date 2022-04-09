@@ -27,7 +27,9 @@ namespace NoSuchCompany.Games.SuperMario.Diagnostics
         
         EnemyAi = 16,
         
-        RaycastingCollisions = 32
+        RaycastingCollisions = 32,
+        
+        JumpController = 64,
     }
 
     #endregion
