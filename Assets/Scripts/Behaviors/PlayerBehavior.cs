@@ -95,7 +95,10 @@ namespace NoSuchCompany.Games.SuperMario.Behaviors
                 return;
                     
             Vector2 movementDirection = _inputManager.Direction;
-            _velocity.x = Mathf.SmoothDamp(_velocity.x, movementDirection.x * MoveSpeed, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
+            bool isRunning = _inputManager.IsRunPressed;
+            float runningFactor = isRunning ? 1.8f : 1f;
+            
+            _velocity.x = Mathf.SmoothDamp(_velocity.x, movementDirection.x * runningFactor * MoveSpeed, ref _smoothedVelocityX, _characterBehavior.Collisions.Below ? AccelerationTimeGrounded : AccelerationTimeAirborne);
 
             _characterBehavior.Move(_velocity * Time.deltaTime);
         }

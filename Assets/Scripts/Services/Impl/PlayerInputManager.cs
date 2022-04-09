@@ -18,6 +18,8 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
         public bool IsRightPressed => Gamepad.current.dpad.right.isPressed;
 
         public bool IsJumpPressed => Gamepad.current.buttonSouth.isPressed;
+
+        public bool IsRunPressed => Gamepad.current.buttonWest.isPressed;
         
         public Vector2 Direction => new Vector2(IsLeftPressed ? -1f : IsRightPressed ? 1f : 0f, 0f);
     }

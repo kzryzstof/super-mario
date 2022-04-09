@@ -56,6 +56,8 @@ namespace NoSuchCompany.Games.SuperMario.Services.Impl
 
         public Vector2 Direction => new Vector2(IsLeftPressed ? -1f : IsRightPressed ? 1f : 0f, 0f);
 
+        public bool IsRunPressed { get; }
+
         public void StandStill()
         {
             isLeftPressed = isRightPressed = false;

@@ -15,5 +15,7 @@ namespace NoSuchCompany.Games.SuperMario.Services
         bool IsJumpPressed { get; }
         
         Vector2 Direction { get; }
+        
+        bool IsRunPressed { get; }
     }
 }
